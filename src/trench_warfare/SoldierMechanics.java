@@ -16,18 +16,20 @@ import java.awt.event.MouseEvent;
  *
  * @author BBC132
  */
-class SoilderMachanics extends Environment {
-        int x2s;
-//    new greenSoilder(350, 10, 180, 180);
-        
+class SoldierMechanics extends Environment {
 
+    int x2s;
+    Soldier mrGreen, mrGrey;
+
+//    new greenSoilder(350, 10, 180, 180);
     @Override
     public void initializeEnvironment() {
-        greenSoilder = ResourceTools.loadImageFromResource("Trench_Warfare/Green soilder.gif");
-        
-    }
-        Image greenSoilder;
+//        greenSoilder = ResourceTools.loadImageFromResource("Trench_Warfare/Green soilder.gif");
+        mrGreen = new Soldier(100, 100, SoldierType.GREEN);
+        mrGrey = new Soldier(400, 400, SoldierType.GREY);
 
+    }
+    Image greenSoilder;
 
     @Override
     public void timerTaskHandler() {
@@ -37,7 +39,7 @@ class SoilderMachanics extends Environment {
     @Override
     public void keyPressedHandler(KeyEvent e) {
 //                if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-//            greenSoilder.setX(x2s = greenSoilder.getX() + 50);         
+//            greenSoilder.setX(greenSoilder.getX() - 50);        
 //	} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 //            greenSoilder.setX(greenSoilder.getX() - 50);
 //        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -50,24 +52,24 @@ class SoilderMachanics extends Environment {
 
     @Override
     public void keyReleasedHandler(KeyEvent e) {
-    
+
     }
 
     @Override
     public void environmentMouseClicked(MouseEvent e) {
-    
+
     }
 
     @Override
     public void paintEnvironment(Graphics graphics) {
-        graphics.drawImage(greenSoilder, x, y, this);
-
-
-
+        if (mrGreen != null) {
+            mrGreen.draw(graphics);
+            
+        }
+        if (mrGrey != null) {
+            mrGrey.draw(graphics);
+            
+        }
     }
-    private int x;
-    private int y;
-    private int height;
-    private int width;
-     
+
 }

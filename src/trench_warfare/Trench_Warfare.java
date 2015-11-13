@@ -18,7 +18,7 @@ public class Trench_Warfare {
      */
     public static void main(String[] args) {
   
-        ApplicationStarter.run("Trench Warfare", new SoilderMachanics());
+        ApplicationStarter.run("Trench Warfare", new SoldierMechanics());
     
         }
     
