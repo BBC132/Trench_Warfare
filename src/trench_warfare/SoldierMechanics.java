@@ -38,6 +38,12 @@ class SoldierMechanics extends Environment {
 
     @Override
     public void keyPressedHandler(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            mrGreen.run();
+        } else  if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            mrGreen.stop();
+        }
+        
 //                if (e.getKeyCode() == KeyEvent.VK_RIGHT){
 //            greenSoilder.setX(greenSoilder.getX() - 50);        
 //	} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {

@@ -24,8 +24,6 @@ public class Soldier {
     private SoldierType type;
     private Image image;
     private Animator animator;
-//    private ImageManager imageManager;
-//            ArrayList<String> imageNames, int displayDurationMillis) {
 
 
     public Soldier(int x, int y, SoldierType type) {
@@ -34,6 +32,18 @@ public class Soldier {
 
         this.type = type;
         loadImages();
+    }
+    
+    public void run(){
+        if (animator != null) {
+            animator.setImageNames(runLeft);
+        }
+    }
+    
+    public void stop(){
+        if (animator != null) {
+            animator.setImageNames(standRight);
+        }
     }
 
     public void draw(Graphics graphics) {
@@ -49,31 +59,46 @@ public class Soldier {
 
     private static String STAND_LEFT = "STAND_LEFT";
     private static String STAND_RIGHT = "STAND_RIGHT";
-    private static String RUN_01 = "RUN_01";
-    private static String RUN_02 = "RUN_02";
+    private static String RUN_LEFT_01 = "RUN_LEFT_01";
+    private static String RUN_LEFT_02 = "RUN_LEFT_02";
+    
+    private final static ArrayList<String> standLeft = new ArrayList<>();
+    private final static ArrayList<String> standRight = new ArrayList<>();
+    private final static ArrayList<String> runLeft = new ArrayList<>();
     
     private void loadImages() {
-        String[] imageNames = {STAND_LEFT, STAND_RIGHT, RUN_01, RUN_02};
-        Image[] images;// = Image[4];
+        standLeft.add(STAND_LEFT);
+        standRight.add(STAND_RIGHT);
+        runLeft.add(RUN_LEFT_01);
+        runLeft.add(RUN_LEFT_02);
         
-//        ImageManager imageManager = new ImageManager(imageNames, images);
-
-
-
-//animator
         
+        String[] imageNames = {STAND_LEFT, STAND_RIGHT, RUN_LEFT_01, RUN_LEFT_02};
+        Image[] images = new Image[4];
+        images[0] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_stand_left.gif");
+        images[1] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_stand_right.gif");
+        images[2] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_run01_left.gif");
+        images[3] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_run02_left.gif");
+        
+        ImageManager imageManager = new ImageManager(imageNames, images);
+        
+        animator = new Animator(imageManager, standLeft, 200);
         
         if (type == SoldierType.GREEN){
-            this.image = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_stand_left.gif");
-            
+            this.image = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_stand_right.gif");
         } else {
-            this.image = ResourceTools.loadImageFromResource("trench_warfare/soldier_grey_stand_right.gif");
-        
+            this.image = ResourceTools.loadImageFromResource("trench_warfare/soldier_grey_stand_left.gif");
         }
     }
 
     private Image getImage() {
-        return image; 
+        if (animator != null) {
+            return animator.getCurrentImage();
+        } else {
+            System.out.println("OUCH - Animator is broken!!!");
+            return image;
+        }
+        
     }
 
 }
