@@ -39,26 +39,22 @@ class SoldierMechanics extends Environment {
     @Override
     public void keyPressedHandler(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            
             mrGreen.run();
         } else  if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            mrGreen.stop();
+            mrGreen.run2();
         }
         
-//                if (e.getKeyCode() == KeyEvent.VK_RIGHT){
-//            greenSoilder.setX(greenSoilder.getX() - 50);        
-//	} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-//            greenSoilder.setX(greenSoilder.getX() - 50);
-//        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-//            greenSoilder.setY(greenSoilder.getY() + 50);
-//        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-//            greenSoilder.setY(greenSoilder.getY() - 50);
-//        }
 
     }
 
     @Override
     public void keyReleasedHandler(KeyEvent e) {
-
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            mrGreen.stop();
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            mrGreen.stop2();
+        } 
     }
 
     @Override
@@ -75,7 +71,9 @@ class SoldierMechanics extends Environment {
         if (mrGrey != null) {
             mrGrey.draw(graphics);
             
+            
         }
+        graphics.drawRect(0, 0, 1437, 700);
     }
 
 }
