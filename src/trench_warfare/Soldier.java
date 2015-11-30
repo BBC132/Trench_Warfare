@@ -19,7 +19,8 @@ import java.util.ArrayList;
  */
 public class Soldier {
 
-    private int x, y;
+    private int x;
+    private int y;
     private SoldierState state = SoldierState.STAND_RIGHT;
     private SoldierType type;
     private Image image;
@@ -34,37 +35,41 @@ public class Soldier {
         loadImages();
     }
     
-    public void run(){
-        if (animator != null) {
-            animator.setImageNames(runLeft);
-        }
+    public void runLeft(){
+        setState(SoldierState.RUN_LEFT);
+//        if (animator != null) {
+//            animator.setImageNames(runLeft);
+//        }
     }    
-    public void run2(){
-        if (animator != null) {
-            animator.setImageNames(runRight);
-        }
+
+    public void runRight(){
+        setState(SoldierState.RUN_RIGHT);
+    }    
+    public void runUP(){
+        setState(SoldierState.RUN_RIGHT);
+    }    
+    public void runDOWN(){
+        setState(SoldierState.RUN_DOWN);
     }
     
-    public void stop(){
-        if (animator != null) {
-            animator.setImageNames(standLeft);
-        }
+    public void stopLeft(){
+       setState(SoldierState.STAND_LEFT);
+
     }    
-    public void stop2(){
-        if (animator != null) {
-            animator.setImageNames(standRight);
-        }
+    public void stopRight(){
+       setState(SoldierState.STAND_RIGHT);
+
     }
 
     public void draw(Graphics graphics) {
-        if (type == SoldierType.GREEN) {
+        if (getType() == SoldierType.GREEN) {
             graphics.setColor(Color.GREEN);
         } else {
             graphics.setColor(Color.RED);
         }
-        graphics.drawRect(x, y, 100, 100);
+        graphics.drawRect(getX(), getY(), 100, 100);
         
-        graphics.drawImage(getImage(), x, y, null);
+        graphics.drawImage(getImage(), getX(), getY(), null);
     }
 
     private static String STAND_LEFT = "STAND_LEFT";
@@ -90,6 +95,8 @@ public class Soldier {
     private final static ArrayList<String> standRight = new ArrayList<>();
     private final static ArrayList<String> runLeft = new ArrayList<>();
     private final static ArrayList<String> runRight = new ArrayList<>();
+    private final static ArrayList<String> runUP = new ArrayList<>();
+    private final static ArrayList<String> runDOWN = new ArrayList<>();
     
     private void loadImages() {
         standLeft.add(STAND_LEFT);
@@ -100,7 +107,21 @@ public class Soldier {
         runRight.add(RUN_RIGHT_04);
         runRight.add(RUN_RIGHT_05);
         runRight.add(RUN_RIGHT_06);
-        runRight.add(RUN_RIGHT_07);
+        runRight.add(RUN_RIGHT_07);   
+        runUP.add(RUN_RIGHT_01);
+        runUP.add(RUN_RIGHT_02);
+        runUP.add(RUN_RIGHT_03);
+        runUP.add(RUN_RIGHT_04);
+        runUP.add(RUN_RIGHT_05);
+        runUP.add(RUN_RIGHT_06);
+        runUP.add(RUN_RIGHT_07);   
+        runDOWN.add(RUN_RIGHT_01);
+        runDOWN.add(RUN_RIGHT_02);
+        runDOWN.add(RUN_RIGHT_03);
+        runDOWN.add(RUN_RIGHT_04);
+        runDOWN.add(RUN_RIGHT_05);
+        runDOWN.add(RUN_RIGHT_06);
+        runDOWN.add(RUN_RIGHT_07);
         runLeft.add(RUN_LEFT_01);
         runLeft.add(RUN_LEFT_02);
         runLeft.add(RUN_LEFT_03);
@@ -115,22 +136,22 @@ public class Soldier {
                                RUN_RIGHT_07, STAND_LEFT, RUN_LEFT_01,RUN_LEFT_02,RUN_LEFT_03,
                                RUN_LEFT_04,RUN_LEFT_05,RUN_LEFT_06,RUN_LEFT_07};
         Image[] images = new Image[16];
-        images[0] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_right.jpg");
-        images[1] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run01_right.jpg");
-        images[2] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run02_right.jpg");
-        images[3] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run03_right.jpg");
-        images[4] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run04_right.jpg");
-        images[5] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run05_right.jpg");
-        images[6] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run06_right.jpg");
-        images[7] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run07_right.jpg");
-        images[8] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_left.jpg");
-        images[9] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run01_left.jpg");
-        images[10] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run02_left.jpg");
-        images[11] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run03_left.jpg");
-        images[12] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run04_left.jpg");
-        images[13] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run05_left.jpg");
-        images[14] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run06_left.jpg");
-        images[15] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run07_left.jpg");
+        images[0] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_right.png");
+        images[1] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run01_right.png");
+        images[2] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run02_right.png");
+        images[3] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run03_right.png");
+        images[4] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run04_right.png");
+        images[5] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run05_right.png");
+        images[6] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run06_right.png");
+        images[7] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run07_right.png");
+        images[8] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_left.png");
+        images[9] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run01_left.png");
+        images[10] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run02_left.png");
+        images[11] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run03_left.png");
+        images[12] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run04_left.png");
+        images[13] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run05_left.png");
+        images[14] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run06_left.png");
+        images[15] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run07_left.png");
 
 
         
@@ -138,10 +159,10 @@ public class Soldier {
         
         animator = new Animator(imageManager, standLeft, 200);
         
-        if (type == SoldierType.GREEN){
-            this.image = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_right.jpg");
+        if (getType() == SoldierType.GREEN){
+            this.image = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_right.png");
         } else {
-            this.image = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_left.jpg");
+            this.image = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_left.png");
         }
     }
 
@@ -155,4 +176,76 @@ public class Soldier {
         
     }
 
+    //<editor-fold defaultstate="collapsed" desc="property">
+    /**
+     * @return the x
+     */
+    public int getX() {
+        return x;
+    }
+    
+    /**
+     * @param x the x to set
+     */
+    public void setX(int x) {
+        this.x = x;
+    }
+    
+    /**
+     * @return the y
+     */
+    public int getY() {
+        return y;
+    }
+    
+    /**
+     * @param y the y to set
+     */
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    /**
+     * @return the state
+     */
+    public SoldierState getState() {
+        return state;
+    }
+
+    /**
+     * @param state the state to set
+     */
+    public void setState(SoldierState state) {
+        if (this.state != state) {
+            this.state = state;
+            
+            if (animator != null) {
+                if (state == SoldierState.RUN_RIGHT) {
+                    animator.setImageNames(runRight);
+                } else if (state == SoldierState.RUN_LEFT) {
+                    animator.setImageNames(runLeft);
+                } else if (state == SoldierState.STAND_LEFT) {
+                    animator.setImageNames(standLeft);
+                } else if (state == SoldierState.STAND_RIGHT) {
+                    animator.setImageNames(standRight);
+                } else if (state == SoldierState.RUN_DOWN) {
+                    animator.setImageNames(runRight);
+                } else if (state == SoldierState.RUN_UP) {
+                    animator.setImageNames(runRight);
+                }
+                
+            }
+            
+        }
+        
+    }
+
+    /**
+     * @return the type
+     */
+    public SoldierType getType() {
+        return type;
+    }
+    
 }
+//</editor-fold>

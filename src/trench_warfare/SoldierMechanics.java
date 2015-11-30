@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -39,11 +40,19 @@ class SoldierMechanics extends Environment {
     @Override
     public void keyPressedHandler(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            mrGreen.runLeft();
+            mrGreen.setX(mrGreen.getX() - 10);
             
-            mrGreen.run();
         } else  if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            mrGreen.run2();
-        }
+            mrGreen.setX(mrGreen.getX() + 10);
+            mrGreen.runRight();
+        } else  if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            mrGreen.setY(mrGreen.getY() + 10);
+            mrGreen.runRight();
+        } else  if (e.getKeyCode() == KeyEvent.VK_UP) {
+            mrGreen.setY(mrGreen.getY() - 10);
+            mrGreen.runUP();
+        } 
         
 
     }
@@ -51,10 +60,13 @@ class SoldierMechanics extends Environment {
     @Override
     public void keyReleasedHandler(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            mrGreen.stop();
+            mrGreen.stopLeft();
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            mrGreen.stop2();
-        } 
+            mrGreen.stopRight();
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            mrGreen.stopRight();
+        } else if (e.getKeyCode() == KeyEvent.VK_UP)
+            mrGreen.stopRight();
     }
 
     @Override
