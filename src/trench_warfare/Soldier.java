@@ -110,9 +110,9 @@ public class Soldier {
         runLeft.add(RUN_LEFT_07);
         
         
-        String[] imageNames = {STAND_RIGHT, RUN_RIGHT_01, RUN_RIGHT_03, 
-                               RUN_RIGHT_04, RUN_RIGHT_05, RUN_RIGHT_06, RUN_RIGHT_07
-                               , STAND_LEFT, RUN_LEFT_01,RUN_LEFT_02,RUN_LEFT_03,
+        String[] imageNames = {STAND_RIGHT, RUN_RIGHT_01, RUN_RIGHT_02, 
+                               RUN_RIGHT_03, RUN_RIGHT_04, RUN_RIGHT_05, RUN_RIGHT_06,
+                               RUN_RIGHT_07, STAND_LEFT, RUN_LEFT_01,RUN_LEFT_02,RUN_LEFT_03,
                                RUN_LEFT_04,RUN_LEFT_05,RUN_LEFT_06,RUN_LEFT_07};
         Image[] images = new Image[16];
         images[0] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_right.jpg");
@@ -130,7 +130,7 @@ public class Soldier {
         images[12] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run04_left.jpg");
         images[13] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run05_left.jpg");
         images[14] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run06_left.jpg");
-        images[15]= ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run07_left.jpg");
+        images[15] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run07_left.jpg");
 
 
         
