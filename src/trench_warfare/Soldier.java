@@ -35,32 +35,33 @@ public class Soldier {
         loadImages();
     }
     
+//<editor-fold defaultstate="collapsed" desc="Moving Animator">
     public void runLeft(){
         setState(SoldierState.RUN_LEFT);
 //        if (animator != null) {
 //            animator.setImageNames(runLeft);
 //        }
-    }    
-
+    }
+    
     public void runRight(){
         setState(SoldierState.RUN_RIGHT);
-    }    
+    }
     public void runUP(){
         setState(SoldierState.RUN_RIGHT);
-    }    
+    }
     public void runDOWN(){
         setState(SoldierState.RUN_DOWN);
     }
     
     public void stopLeft(){
-       setState(SoldierState.STAND_LEFT);
-
-    }    
-    public void stopRight(){
-       setState(SoldierState.STAND_RIGHT);
-
+        setState(SoldierState.STAND_LEFT);
+        
     }
-
+    public void stopRight(){
+        setState(SoldierState.STAND_RIGHT);
+        
+    }
+    
     public void draw(Graphics graphics) {
         if (getType() == SoldierType.GREEN) {
             graphics.setColor(Color.GREEN);
@@ -71,7 +72,7 @@ public class Soldier {
         
         graphics.drawImage(getImage(), getX(), getY(), null);
     }
-
+    
     private static String STAND_LEFT = "STAND_LEFT";
     private static String RUN_LEFT_01 = "RUN_LEFT_01";
     private static String RUN_LEFT_02 = "RUN_LEFT_02";
@@ -80,8 +81,8 @@ public class Soldier {
     private static String RUN_LEFT_05 = "RUN_LEFT_05";
     private static String RUN_LEFT_06 = "RUN_LEFT_06";
     private static String RUN_LEFT_07 = "RUN_LEFT_07";
-
-    private static String STAND_RIGHT = "STAND_RIGHT";    
+    
+    private static String STAND_RIGHT = "STAND_RIGHT";
     private static String RUN_RIGHT_01 = "RUN_Right_01";
     private static String RUN_RIGHT_02 = "RUN_Right_02";
     private static String RUN_RIGHT_03 = "RUN_Right_03";
@@ -107,14 +108,14 @@ public class Soldier {
         runRight.add(RUN_RIGHT_04);
         runRight.add(RUN_RIGHT_05);
         runRight.add(RUN_RIGHT_06);
-        runRight.add(RUN_RIGHT_07);   
+        runRight.add(RUN_RIGHT_07);
         runUP.add(RUN_RIGHT_01);
         runUP.add(RUN_RIGHT_02);
         runUP.add(RUN_RIGHT_03);
         runUP.add(RUN_RIGHT_04);
         runUP.add(RUN_RIGHT_05);
         runUP.add(RUN_RIGHT_06);
-        runUP.add(RUN_RIGHT_07);   
+        runUP.add(RUN_RIGHT_07);
         runDOWN.add(RUN_RIGHT_01);
         runDOWN.add(RUN_RIGHT_02);
         runDOWN.add(RUN_RIGHT_03);
@@ -131,10 +132,10 @@ public class Soldier {
         runLeft.add(RUN_LEFT_07);
         
         
-        String[] imageNames = {STAND_RIGHT, RUN_RIGHT_01, RUN_RIGHT_02, 
-                               RUN_RIGHT_03, RUN_RIGHT_04, RUN_RIGHT_05, RUN_RIGHT_06,
-                               RUN_RIGHT_07, STAND_LEFT, RUN_LEFT_01,RUN_LEFT_02,RUN_LEFT_03,
-                               RUN_LEFT_04,RUN_LEFT_05,RUN_LEFT_06,RUN_LEFT_07};
+        String[] imageNames = {STAND_RIGHT, RUN_RIGHT_01, RUN_RIGHT_02,
+            RUN_RIGHT_03, RUN_RIGHT_04, RUN_RIGHT_05, RUN_RIGHT_06,
+            RUN_RIGHT_07, STAND_LEFT, RUN_LEFT_01,RUN_LEFT_02,RUN_LEFT_03,
+            RUN_LEFT_04,RUN_LEFT_05,RUN_LEFT_06,RUN_LEFT_07};
         Image[] images = new Image[16];
         images[0] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_right.png");
         images[1] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run01_right.png");
@@ -152,8 +153,8 @@ public class Soldier {
         images[13] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run05_left.png");
         images[14] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run06_left.png");
         images[15] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_run07_left.png");
-
-
+        
+        
         
         ImageManager imageManager = new ImageManager(imageNames, images);
         
@@ -165,7 +166,7 @@ public class Soldier {
             this.image = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_left.png");
         }
     }
-
+    
     private Image getImage() {
         if (animator != null) {
             return animator.getCurrentImage();
@@ -175,7 +176,8 @@ public class Soldier {
         }
         
     }
-
+    
+//</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="property">
     /**
      * @return the x

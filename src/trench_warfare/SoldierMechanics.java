@@ -7,10 +7,13 @@ package trench_warfare;
 
 import environment.Environment;
 import images.ResourceTools;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,41 +22,60 @@ import javax.swing.JOptionPane;
  */
 class SoldierMechanics extends Environment {
 
+    int xSoldier = 100;
+    int ySoldier = 100;
     int x2s;
     Soldier mrGreen, mrGrey;
+    private ArrayList<Bullet> bullet;
+    Image bulletType;
 
+    
+    
 //    new greenSoilder(350, 10, 180, 180);
     @Override
     public void initializeEnvironment() {
-//        greenSoilder = ResourceTools.loadImageFromResource("Trench_Warfare/Green soilder.gif");
-        mrGreen = new Soldier(100, 100, SoldierType.GREEN);
-        mrGrey = new Soldier(400, 400, SoldierType.GREY);
+        bulletType = ResourceTools.loadImageFromResource("Trench_Warfare/Bullet.png");
 
+//        greenSoilder = ResourceTools.loadImageFromResource("Trench_Warfare/Green soilder.gif");
+        mrGreen = new Soldier(xSoldier, ySoldier, SoldierType.GREEN);
+        mrGrey = new Soldier(400, 400, SoldierType.GREY);
+        bullet = new ArrayList<>();
+        
+        
+        
     }
     Image greenSoilder;
 
     @Override
     public void timerTaskHandler() {
-
+        if (bullet != null) {
+            for (Bullet bullet : bullet) {
+                bullet.move();
+                
+            }
+           
+        }
     }
-
+    int moveSpeed = 15;
     @Override
     public void keyPressedHandler(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            mrGreen.setX(mrGreen.getX() - moveSpeed);
             mrGreen.runLeft();
-            mrGreen.setX(mrGreen.getX() - 10);
             
         } else  if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            mrGreen.setX(mrGreen.getX() + 10);
+            mrGreen.setX(mrGreen.getX() + moveSpeed);
             mrGreen.runRight();
         } else  if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            mrGreen.setY(mrGreen.getY() + 10);
+            mrGreen.setY(mrGreen.getY() + moveSpeed);
             mrGreen.runRight();
         } else  if (e.getKeyCode() == KeyEvent.VK_UP) {
-            mrGreen.setY(mrGreen.getY() - 10);
+            mrGreen.setY(mrGreen.getY() - moveSpeed);
             mrGreen.runUP();
         } 
-        
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            bullet.add(new Bullet(bulletType, mrGreen.getX(),mrGreen.getY() ));
+        }
 
     }
 
@@ -80,12 +102,20 @@ class SoldierMechanics extends Environment {
             mrGreen.draw(graphics);
             
         }
+        if (bullet != null) {
+            for (Bullet bullet : bullet) {
+                bullet.draw(graphics);
+                
+            }
+        }
         if (mrGrey != null) {
             mrGrey.draw(graphics);
             
             
         }
-        graphics.drawRect(0, 0, 1437, 700);
+       graphics.drawRect(0,0, 1439,768);
     }
+    
+    
 
 }

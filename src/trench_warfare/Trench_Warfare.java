@@ -5,6 +5,7 @@
  */
 package trench_warfare;
 import environment.ApplicationStarter;
+import java.awt.Dimension;
 
 
 /**
@@ -18,8 +19,8 @@ public class Trench_Warfare {
      */
     public static void main(String[] args) {
   
-        ApplicationStarter.run("Trench Warfare", new SoldierMechanics());
-    
+        ApplicationStarter.run(args, "Trench Warfare", new Dimension(1439,768), new SoldierMechanics());
+        
         }
     
 }

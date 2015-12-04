@@ -2,6 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/SoldierMechanics.java</file>
+            <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/Soldier.java</file>
+            <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/Trench_Warfare.java</file>
+            <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/SoldierState.java</file>
+            <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/SoldierType.java</file>
+        </group>
     </open-files>
 </project-private>
