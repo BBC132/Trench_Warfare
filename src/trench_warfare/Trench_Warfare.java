@@ -19,7 +19,7 @@ public class Trench_Warfare {
      */
     public static void main(String[] args) {
   
-        ApplicationStarter.run(args, "Trench Warfare", new Dimension(1439,768), new SoldierMechanics());
+        ApplicationStarter.run(args, "Trench Warfare", new Dimension(1439,900), new SoldierMechanics());
         
         }
     

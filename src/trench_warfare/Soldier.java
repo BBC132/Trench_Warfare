@@ -73,6 +73,7 @@ public class Soldier {
         graphics.drawImage(getImage(), getX(), getY(), null);
     }
     
+//    LEFT OFF HERE
     private static String STAND_LEFT = "STAND_LEFT";
     private static String RUN_LEFT_01 = "RUN_LEFT_01";
     private static String RUN_LEFT_02 = "RUN_LEFT_02";

@@ -6,6 +6,7 @@
 package trench_warfare;
 
 import environment.Environment;
+import grid.Grid;
 import images.ResourceTools;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -28,12 +29,16 @@ class SoldierMechanics extends Environment {
     Soldier mrGreen, mrGrey;
     private ArrayList<Bullet> bullet;
     Image bulletType;
-
+    Image backGround;
+    Grid grid;
     
     
 //    new greenSoilder(350, 10, 180, 180);
     @Override
     public void initializeEnvironment() {
+        backGround = ResourceTools.loadImageFromFile(TOOL_TIP_TEXT_KEY)
+        grid = new Grid(10, 6, 145, 145, new Point(0, 0), Color.black);
+
         bulletType = ResourceTools.loadImageFromResource("Trench_Warfare/Bullet.png");
 
 //        greenSoilder = ResourceTools.loadImageFromResource("Trench_Warfare/Green soilder.gif");
@@ -98,6 +103,10 @@ class SoldierMechanics extends Environment {
 
     @Override
     public void paintEnvironment(Graphics graphics) {
+        if (grid != null) {
+            grid.paintComponent(graphics);
+//            grid2.paintComponent(graphics);
+        }
         if (mrGreen != null) {
             mrGreen.draw(graphics);
             
@@ -113,7 +122,7 @@ class SoldierMechanics extends Environment {
             
             
         }
-       graphics.drawRect(0,0, 1439,768);
+       graphics.drawRect(0,0, 1438, 850);
     }
     
     
