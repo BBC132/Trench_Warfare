@@ -21,13 +21,15 @@ import javax.swing.JOptionPane;
  *
  * @author BBC132
  */
-class SoldierMechanics extends Environment {
+class BattleField extends Environment {
 
     int xSoldier = 100;
     int ySoldier = 100;
     int x2s;
     Soldier mrGreen, mrGrey;
     private ArrayList<Bullet> bullet;
+    private ArrayList<Trench> trench;
+    Image trench1;
     Image bulletType;
     Image backGround;
     Grid grid;
@@ -36,14 +38,16 @@ class SoldierMechanics extends Environment {
 //    new greenSoilder(350, 10, 180, 180);
     @Override
     public void initializeEnvironment() {
-        backGround = ResourceTools.loadImageFromFile(TOOL_TIP_TEXT_KEY)
+        backGround = ResourceTools.loadImageFromResource("Trench_Warfare/BattleGround1.png");
+        backGround = ResourceTools.loadImageFromResource("Trench_Warfare/BattleGround1.png");
         grid = new Grid(10, 6, 145, 145, new Point(0, 0), Color.black);
-
         bulletType = ResourceTools.loadImageFromResource("Trench_Warfare/Bullet.png");
 
 //        greenSoilder = ResourceTools.loadImageFromResource("Trench_Warfare/Green soilder.gif");
         mrGreen = new Soldier(xSoldier, ySoldier, SoldierType.GREEN);
         mrGrey = new Soldier(400, 400, SoldierType.GREY);
+        trench1 = ResourceTools.loadImageFromResource("Trench_Warfare/Trench1.png");
+        trench = new ArrayList<>();
         bullet = new ArrayList<>();
         
         
@@ -80,7 +84,7 @@ class SoldierMechanics extends Environment {
         } 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             bullet.add(new Bullet(bulletType, mrGreen.getX(),mrGreen.getY() ));
-        }
+        }        
 
     }
 
@@ -99,12 +103,28 @@ class SoldierMechanics extends Environment {
     @Override
     public void environmentMouseClicked(MouseEvent e) {
 
+        System.out.println("mouse click at system point " + e.getPoint());
+        System.out.println("mouse click in cell grid " + grid.getCellCoordinateFromSystemCoordinate(e.getPoint()));
+        System.out.println("mouse click in cell " + grid.getCellLocationFromSystemCoordinate(e.getPoint()));
+        trench.add(new Trench(grid.getCellLocationFromSystemCoordinate(e.getPoint()), trench1, grid));
+        
+        
+        
     }
 
     @Override
     public void paintEnvironment(Graphics graphics) {
+        graphics.drawImage(backGround, 0, 0, this);
+        
+        if (trench != null) {
+            for (Trench trench : trench) {
+                trench.draw(graphics);
+            }
+        }
+        
         if (grid != null) {
             grid.paintComponent(graphics);
+            
 //            grid2.paintComponent(graphics);
         }
         if (mrGreen != null) {
