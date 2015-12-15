@@ -7,17 +7,14 @@ package trench_warfare;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import grid.Grid;
 import java.awt.Point;
 
 /**
  *
  * @author BBC132
  */
-public class Trench {
-
-    Trench(Point point, Image image, CellDataProviderIntf cellData) {
-        
+public class Mines {
+     Mines(Point point, Image image, CellDataProviderIntf cellData) {
         this.location = point;
         this.image = image;
         this.cellData = cellData;
@@ -93,4 +90,6 @@ public class Trench {
     public void setCellData(CellDataProviderIntf cellData) {
         this.cellData = cellData;
     }
+
+
 }

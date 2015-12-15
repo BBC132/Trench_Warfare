@@ -40,7 +40,7 @@ public class Bullet {
     }
 
     public void move(){
-       this.x = x + 100;
+       this.x = x + 10;
        
     }
     
