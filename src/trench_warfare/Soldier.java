@@ -77,7 +77,7 @@ public class Soldier {
             graphics.setColor(Color.RED);
         }
 
-        graphics.drawRect(getX(), getY(), 100, 100);
+        graphics.drawRect(getX() + 10, getY() + 5, 45, 65);
 
         graphics.drawImage(getImage(), getX(), getY(), null);
         graphics.fillOval(getCenterOfMass().x, getCenterOfMass().y, 10, 10);
