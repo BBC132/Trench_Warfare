@@ -34,7 +34,7 @@ public class Soldier {
         this.type = type;
         loadImages();
     }
-
+    
     public Point getCenterOfMass() {
         return new Point(getX() + (image.getWidth(null) / 2), getY() + (image.getHeight(null)/ 2));
     }

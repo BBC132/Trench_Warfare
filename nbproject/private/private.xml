@@ -14,15 +14,12 @@
         <group>
             <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/Bullet.java</file>
             <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/Mines.java</file>
-            <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/MoveValidatorIntf.java</file>
             <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/Trench.java</file>
-            <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/CellDataProviderIntf.java</file>
             <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/Soldier.java</file>
             <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/BattleField.java</file>
             <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/SoldierState.java</file>
             <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/SoldierType.java</file>
             <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/Barrier.java</file>
-            <file>file:/Users/BBC132/NetBeansProjects/Trench_Warfare/src/trench_warfare/MoveValidatorIntf1.java</file>
         </group>
     </open-files>
 </project-private>

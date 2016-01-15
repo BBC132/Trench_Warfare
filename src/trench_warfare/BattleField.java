@@ -32,6 +32,10 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     private ArrayList<Trench> trenchs;
     private ArrayList<Mines> mines;
     private ArrayList<Mines> mines2;
+
+    private ArrayList<Soldier> getSoldierCopy() {
+        return new ArrayList<>(soldiers);
+    }
     Image mine;
     Image mine2;
     Image trench1;
@@ -74,6 +78,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
                 for (Soldier soldier : soldiers) {
                     soldier.setX(soldier.getX() + moveSpeed);
                     validateMove(soldier.getCenterOfMass());
+
                 }
 
                 moveDelay = 0;
@@ -82,6 +87,19 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
                 moveDelay++;
             }
 
+        }
+    }
+
+    private void explosion() {
+        if (soldiers != null) {
+            if (mines != null) {
+                ArrayList<Soldier> toSoldierRemoves = new ArrayList<>();
+                for (Soldier soldier : soldiers) {
+                    toSoldierRemoves.add(soldier);
+                    soldiers.removeAll(toSoldierRemoves);
+
+                }
+            }
         }
     }
 
@@ -115,7 +133,6 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     private int random(int value) {
         return (int) (Math.random() * value);
     }
-//                drops.add(new Drop(random(1400), random(800)));
 
     @Override
     public void keyReleasedHandler(KeyEvent e) {
@@ -132,7 +149,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
             //clear out the current soldiers
             soldiers.clear();
             for (int i = 0; i < 5; i++) {
-                soldiers.add(new Soldier(random(90), random(75), SoldierType.GREY));
+                soldiers.add(new Soldier(random(90), random(75), SoldierType.GREEN));
                 soldiers.get(i).runRight();
 //                mrGreen.runRight();
             }
@@ -146,9 +163,12 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         System.out.println("mouse click in cell grid " + grid.getCellCoordinateFromSystemCoordinate(e.getPoint()));
         System.out.println("mouse click in cell " + grid.getCellLocationFromSystemCoordinate(e.getPoint()));
         System.out.println("");
-        
+
 //        trenchs.add(new Trench(grid.getCellCoordinateFromSystemCoordinate(e.getPoint()), trench1, this));
-        mines.add(new Mines(grid.getCellCoordinateFromSystemCoordinate(e.getPoint()), mine, this));
+                if (mines != null){
+            mines.setX(e.getX());
+            mines.setY(e.getY());
+    }
     }
 
     @Override
@@ -174,13 +194,13 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 
         if (mrGreen != null) {
             mrGreen.draw(graphics);
-        } 
+        }
         if (soldiers != null) {
             for (Soldier soldier : soldiers) {
                 soldier.draw(graphics);
             }
         }
-        
+
         if (bullets != null) {
             for (Bullet bullet : bullets) {
                 bullet.draw(graphics);
@@ -239,13 +259,12 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         }
         if (isInMineField(proposedLocation)) {
             if (true) {
-            mines.clear();
-                for (Soldier soldier : soldiers) {
-                    soldiers.remove(soldier);
-                }
-            System.out.println("ouch");          
-                        }
-            
+//                explosion();
+                mines.clear();
+                
+                System.out.println("ouch");
+            }
+
         } else {
             System.out.println(" he is ok ");
         }
