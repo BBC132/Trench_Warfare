@@ -10,5 +10,5 @@ package trench_warfare;
  * @author BBC132
  */
 public enum SoldierState {
-    STAND_LEFT, STAND_RIGHT, RUN_LEFT, RUN_RIGHT, RUN_UP, RUN_DOWN
+    STAND_LEFT, STAND_RIGHT, RUN_LEFT, RUN_RIGHT, RUN_UP, RUN_DOWN, DEAD_LEFT
 }

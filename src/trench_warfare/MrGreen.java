@@ -12,36 +12,50 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 /**
  *
  * @author BBC132
  */
-public class Soldier {
+public class MrGreen {
 
+    ArrayList<Bullet> bullets;
     private int x;
     private int y;
     private SoldierState state = SoldierState.STAND_RIGHT;
     private SoldierType type;
     private Image image;
     private Animator animator;
+    private int speed;
+    
 
-    public Soldier(int x, int y, SoldierType type) {
+    public MrGreen(int x, int y, SoldierType type) {
         this.x = x;
         this.y = y;
 
         this.type = type;
         loadImages();
+        bullets = new ArrayList<>();
+        speed = 5;
     }
-    
+
     public Point getCenterOfMass() {
-        return new Point(getX() + (image.getWidth(null) / 2), getY() + (image.getHeight(null)/ 2));
+        return new Point(getX() + (image.getWidth(null) / 2), getY() + (image.getHeight(null) / 2));
     }
 //<editor-fold defaultstate="collapsed" desc="Moving Animator">
-
-    public void runLeft() {
+    public void shooting(){
         
+        if (SoldierState.RUN_RIGHT != null) {
+            setState(SoldierState.STAND_RIGHT);
+
+        } else  {
+            setState(SoldierState.STAND_LEFT);
+        }
+    }
+    public void runLeft() {
+
         setState(SoldierState.RUN_LEFT);
 //        if (animator != null) {
 //            animator.setImageNames(runLeft);
@@ -71,17 +85,17 @@ public class Soldier {
     }
 
     public void draw(Graphics graphics) {
-        if (getType() == SoldierType.GREEN) {
             graphics.setColor(Color.GREEN);
-        } else {
-            graphics.setColor(Color.RED);
-        }
 
-        graphics.drawRect(getX() + 10, getY() + 5, 45, 65);
+
+        graphics.drawRect(getX() + 20, getY() + 5, 60, 90);
 
         graphics.drawImage(getImage(), getX(), getY(), null);
         graphics.fillOval(getCenterOfMass().x, getCenterOfMass().y, 10, 10);
 //        graphics.fillOval(getX() + 50, getY() + 50, 10, 10);
+    }
+    public Rectangle rectangle() {
+        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
 
 //    LEFT OFF HERE
@@ -255,6 +269,20 @@ public class Soldier {
      */
     public SoldierType getType() {
         return type;
+    }
+
+    void move() {
+        if (state == SoldierState.RUN_LEFT) {
+            x -= this.speed;
+        } else if (state == SoldierState.RUN_RIGHT) {
+            x += this.speed;
+        } else if (state == SoldierState.RUN_UP) {
+            y -= this.speed;
+        } else if (state == SoldierState.RUN_DOWN) {
+            y += this.speed;
+        } else if (state == SoldierState.DEAD_LEFT) {
+
+        } 
     }
 
 }

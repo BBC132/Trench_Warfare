@@ -11,6 +11,8 @@ import images.ResourceTools;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
 /**
@@ -22,9 +24,7 @@ public class Bullet {
     private int x;
     private int y;
     private SoldierState state = SoldierState.STAND_RIGHT;
-    private SoldierType type;
     private Image image;
-    private Animator animator;
 
 
     public Bullet(Image image, int x, int y) {
@@ -34,8 +34,11 @@ public class Bullet {
     }
     public void draw(Graphics graphics){
 
+//        graphics.fillOval(getCenterOfMass().x, getCenterOfMass().y, 10, 10);
         
         graphics.drawImage(image, getX(), getY(), null);
+        graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
+        
         
     }
 
@@ -44,6 +47,13 @@ public class Bullet {
        
     }
     
+    public Point getCenterOfMass() {
+        return new Point(getX() + (image.getWidth(null) / 2), getY() + (image.getHeight(null) / 2));
+    }
+    
+    public Rectangle rectangle() {
+        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+    }
 //<editor-fold defaultstate="collapsed" desc="Property">
     /**
      * @return the x

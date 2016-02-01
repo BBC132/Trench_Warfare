@@ -25,17 +25,12 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 
     int collum1X = 20;
     int collum1Y = 20;
-    int x2s;
-    Soldier mrGreen, mrGrey;
-    private ArrayList<Soldier> soldiers;
+    MrGreen mrGreen;
+    MrGrey mrGrey;
     private ArrayList<Bullet> bullets;
     private ArrayList<Trench> trenchs;
     private ArrayList<Mines> mines;
-    private ArrayList<Mines> mines2;
-
-    private ArrayList<Soldier> getSoldierCopy() {
-        return new ArrayList<>(soldiers);
-    }
+    private ArrayList<MrGrey> mrGreys;
     Image mine;
     Image mine2;
     Image trench1;
@@ -47,6 +42,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     int counter;
     double moveDelay = 0;
     double moveDelayLimit = 10;
+    private ArrayList<Item> items;
 
 //    new greenSoilder(350, 10, 180, 180);
     @Override
@@ -56,31 +52,35 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         grid = new Grid(10, 6, 145, 145, new Point(0, 0), Color.black);
         bulletType = ResourceTools.loadImageFromResource("Trench_Warfare/Bullet.png");
 //        greenSoilder = ResourceTools.loadImageFromResource("Trench_Warfare/Green soilder.gif");
-//        mrGreen = new Soldier(collum1X, collum1Y, SoldierType.GREEN);
-        mrGrey = new Soldier(400, 400, SoldierType.GREY);
+        mrGreen = new MrGreen(collum1X, collum1Y, SoldierType.GREEN);
+        mrGrey = new MrGrey(800, 400, SoldierType.GREY);
         trench1 = ResourceTools.loadImageFromResource("Trench_Warfare/Trench1.png");
         trenchs = new ArrayList<>();
-        soldiers = new ArrayList<>();
         bullets = new ArrayList<>();
         mines = new ArrayList<>();
-        mines2 = new ArrayList<>();
+        mrGreys = new ArrayList<>();
+        items = new ArrayList<>();
+//        items.add(new Item(4, 5, true, Item.ITEMS_TYPE_FLAMETHROWER, this, this));
+        mrGreys.add(mrGrey);
+
     }
 
     @Override
     public void timerTaskHandler() {
+
         if (bullets != null) {
             for (Bullet bullet : bullets) {
                 bullet.move();
+                this.validateMove(bullet.getCenterOfMass());
+
             }
         }
-        if (soldiers != null) {
+        shot();
+
+        if (mrGreys != null) {
             if (moveDelay >= moveDelayLimit) {
-                for (Soldier soldier : soldiers) {
-                    soldier.setX(soldier.getX() + moveSpeed);
-                    validateMove(soldier.getCenterOfMass());
-
-                }
-
+//                mrGrey.setX(mrGrey.getX() + moveSpeed); 
+//                mrGrey.runRight();
                 moveDelay = 0;
 
             } else {
@@ -90,71 +90,44 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         }
     }
 
-    private void explosion() {
-        if (soldiers != null) {
-            if (mines != null) {
-                ArrayList<Soldier> toSoldierRemoves = new ArrayList<>();
-                for (Soldier soldier : soldiers) {
-                    toSoldierRemoves.add(soldier);
-                    soldiers.removeAll(toSoldierRemoves);
-
-                }
-            }
-        }
-    }
-
     @Override
     public void keyPressedHandler(KeyEvent e) {
-//        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-//            mrGreen.setX(mrGreen.getX() - moveSpeed);
-//            mrGreen.runLeft();
-//            this.validateMove(mrGreen.getCenterOfMass());
-//
-//        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-//            mrGreen.setX(mrGreen.getX() + moveSpeed);
-//            mrGreen.runRight();
-//            this.validateMove(mrGreen.getCenterOfMass());
-//        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-//            mrGreen.setY(mrGreen.getY() + moveSpeed);
-//            mrGreen.runRight();
-//            this.validateMove(mrGreen.getCenterOfMass());
-//        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-//            mrGreen.setY(mrGreen.getY() - moveSpeed);
-//            mrGreen.runUP();
-//            this.validateMove(mrGreen.getCenterOfMass());
-//        }
-//        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-//            AudioPlayer.play("/trench_warfare/RifleShooting.wav");
-//            bullets.add(new Bullet(bulletType, mrGreen.getX(), mrGreen.getY()));
-//        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            mrGreen.runLeft();
+            mrGreen.move();
+            this.validateMove(mrGreen.getCenterOfMass());
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            mrGreen.runRight();
+            mrGreen.move();
+            this.validateMove(mrGreen.getCenterOfMass());
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            mrGreen.runDOWN();
+            mrGreen.move();
+            this.validateMove(mrGreen.getCenterOfMass());
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            mrGreen.runUP();
+            mrGreen.move();
+            this.validateMove(mrGreen.getCenterOfMass());
+        }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            AudioPlayer.play("/trench_warfare/RifleShooting.wav");
+            bullets.add(new Bullet(bulletType, mrGreen.getX() - 50, mrGreen.getY() - 10));
+        }
 
-    }
-
-    private int random(int value) {
-        return (int) (Math.random() * value);
     }
 
     @Override
     public void keyReleasedHandler(KeyEvent e) {
-//        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-//            mrGreen.stopLeft();
-//        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-//            mrGreen.stopRight();
-//        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-//            mrGreen.stopRight();
-//        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-//            mrGreen.stopRight();
-//        }
-        if (e.getKeyCode() == KeyEvent.VK_1) {
-            //clear out the current soldiers
-            soldiers.clear();
-            for (int i = 0; i < 5; i++) {
-                soldiers.add(new Soldier(random(90), random(75), SoldierType.GREEN));
-                soldiers.get(i).runRight();
-//                mrGreen.runRight();
-            }
-
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            mrGreen.stopLeft();
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            mrGreen.stopRight();
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            mrGreen.stopRight();
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            mrGreen.stopRight();
         }
+
     }
 
     @Override
@@ -163,12 +136,12 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         System.out.println("mouse click in cell grid " + grid.getCellCoordinateFromSystemCoordinate(e.getPoint()));
         System.out.println("mouse click in cell " + grid.getCellLocationFromSystemCoordinate(e.getPoint()));
         System.out.println("");
-
 //        trenchs.add(new Trench(grid.getCellCoordinateFromSystemCoordinate(e.getPoint()), trench1, this));
-                if (mines != null){
-            mines.setX(e.getX());
-            mines.setY(e.getY());
-    }
+        mines.add(new Mines(grid.getCellCoordinateFromSystemCoordinate(e.getPoint()), mine, this));
+//                if (mines != null){
+//            mines.setX(e.getX());
+//            mines.setY(e.getY());
+//    }
     }
 
     @Override
@@ -195,11 +168,6 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         if (mrGreen != null) {
             mrGreen.draw(graphics);
         }
-        if (soldiers != null) {
-            for (Soldier soldier : soldiers) {
-                soldier.draw(graphics);
-            }
-        }
 
         if (bullets != null) {
             for (Bullet bullet : bullets) {
@@ -211,7 +179,6 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
             mrGrey.draw(graphics);
 
         }
-        graphics.drawRect(0, 0, 1438, 850);
     }
 
     public boolean isInTrench(Point systemLocation) {
@@ -226,30 +193,24 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
             }
         }
         return false;
-
     }
 
     public boolean isInMineField(Point systemLocation) {
         //decode the sysLoc to a grid cell
         Point gridLocation = grid.getCellCoordinateFromSystemCoordinate(systemLocation);
-        ArrayList<Mines> toMinesRemove = new ArrayList<>();
         //check if that grid cell contains a trench
 //        return (gridLocation.equals(trench));
 //        return this.trenchs.contains(gridLocation);
         for (Mines mine : mines) {
             if (mine.getLocation().equals(gridLocation)) {
-                toMinesRemove.add(mine);
-
                 return true;
-
             }
         }
-
         return false;
-
     }
 
     //<editor-fold defaultstate="collapsed" desc="ValidateMove">
+
     @Override
     public Point validateMove(Point proposedLocation) {
         if (isInTrench(proposedLocation)) {
@@ -258,15 +219,8 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
             moveSpeed = 15;
         }
         if (isInMineField(proposedLocation)) {
-            if (true) {
-//                explosion();
                 mines.clear();
-                
                 System.out.println("ouch");
-            }
-
-        } else {
-            System.out.println(" he is ok ");
         }
 
 //        if (trench.getLocation().x == mrGreen.getX()) {
@@ -277,6 +231,23 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 //            System.out.println("!");
 //        }
         return proposedLocation;
+    }
+
+    private void shot() {
+        if (mrGrey != null) {
+            if (bullets != null) {
+                for (Bullet bullet : bullets) {
+                    for (MrGrey mrGrey : mrGreys) {
+                        if (bullet.rectangle().intersects(mrGrey.rectangle())) {
+                            System.out.println("Shot");
+                            mrGrey.deadLeft();
+                        } else {
+                            mrGrey.runLeft();
+                        }
+                    }
+                }
+            }
+        }
     }
 
 //</editor-fold>

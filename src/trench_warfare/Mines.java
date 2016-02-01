@@ -14,9 +14,8 @@ import java.awt.Point;
  * @author BBC132
  */
 public class Mines {
-     Mines( Point point, Image image, CellDataProviderIntf cellData, int x, int y) {
-        this.x = x;
-        this.y = y;
+     Mines( Point point, Image image, CellDataProviderIntf cellData) {
+
         this.location = point;
         this.image = image;
         this.cellData = cellData;
@@ -26,8 +25,8 @@ public class Mines {
 //        graphics.drawImage(getImage(), location.x, location.y, null);
         graphics.drawImage(getImage(), getCellData().getSystemCoordX(getLocation().x, 
                 getLocation().y),getCellData().getSystemCoordY(getLocation().x, 
-                getLocation().y), 20, 
-                20, null);
+                getLocation().y), getCellData().getCellWidth(), 
+                getCellData().getCellHeight(), null);
     }
 //   public Point getCenterOfMass() {
 //        return new Point(getX() + (image.getWidth(null) / 2), getY() + (image.getHeight(null)/ 2));
