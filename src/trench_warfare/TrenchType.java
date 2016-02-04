@@ -9,6 +9,6 @@ package trench_warfare;
  *
  * @author BBC132
  */
-public enum SoldierState {
-    STAND_LEFT, STAND_RIGHT, RUN_LEFT, RUN_RIGHT, RUN_UP, RUN_DOWN, DEAD_LEFT, 
+public enum TrenchType {
+    LEFT_CLOSING, LEFT_OPENING, RIGHT_CLOSING, RIGHT_OPENING, LEFT_CLOSED, RIGHT_CLOSED, RIGHT_OPENED, LEFT_OPENED
 }

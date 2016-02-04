@@ -37,7 +37,6 @@ public class MrGreen {
 
         this.type = type;
         loadImages();
-        bullets = new ArrayList<>();
         speed = 5;
     }
 
@@ -46,13 +45,13 @@ public class MrGreen {
     }
 //<editor-fold defaultstate="collapsed" desc="Moving Animator">
     public void shooting(){
-        
-        if (SoldierState.RUN_RIGHT != null) {
-            setState(SoldierState.STAND_RIGHT);
-
-        } else  {
-            setState(SoldierState.STAND_LEFT);
-        }
+//        
+//        if (SoldierState.RUN_RIGHT != null) {
+//            setState(SoldierState.STAND_RIGHT);
+//
+//        } else  {
+//            setState(SoldierState.STAND_LEFT);
+//        }
     }
     public void runLeft() {
 
@@ -95,7 +94,7 @@ public class MrGreen {
 //        graphics.fillOval(getX() + 50, getY() + 50, 10, 10);
     }
     public Rectangle rectangle() {
-        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+        return new Rectangle(x, y, getImage().getWidth(null), getImage().getHeight(null));
     }
 
 //    LEFT OFF HERE

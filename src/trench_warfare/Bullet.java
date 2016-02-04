@@ -23,36 +23,44 @@ public class Bullet {
 
     private int x;
     private int y;
-    private SoldierState state = SoldierState.STAND_RIGHT;
+//    private SoldierState state = SoldierState.STAND_RIGHT;
     private Image image;
+    private BulletState state;
 
-
-    public Bullet(Image image, int x, int y) {
+    public Bullet(Image image, int x, int y, BulletState state) {
+        this.state = state;
         this.image = image;
         this.x = x;
         this.y = y;
     }
-    public void draw(Graphics graphics){
 
+    public void draw(Graphics graphics) {
 //        graphics.fillOval(getCenterOfMass().x, getCenterOfMass().y, 10, 10);
-        
         graphics.drawImage(image, getX(), getY(), null);
         graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
-        
-        
     }
 
-    public void move(){
-       this.x = x + 10;
-       
+    public void move() {
+        if (state == BulletState.SHOT_LEFT) {
+            x -= 10;
+        } else if (state == BulletState.SHOT_RIGHT) {
+            x += 10;
+        }
+
     }
     
     public Point getCenterOfMass() {
         return new Point(getX() + (image.getWidth(null) / 2), getY() + (image.getHeight(null) / 2));
     }
-    
+
     public Rectangle rectangle() {
         return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+    }
+    public void setState(BulletState state) {
+        if (this.state != state) {
+            this.state = state;
+               
+        }
     }
 //<editor-fold defaultstate="collapsed" desc="Property">
     /**
@@ -61,21 +69,21 @@ public class Bullet {
     public int getX() {
         return x;
     }
-    
+
     /**
      * @param x the x to set
      */
     public void setX(int x) {
         this.x = x;
     }
-    
+
     /**
      * @return the y
      */
     public int getY() {
         return y;
     }
-    
+
     /**
      * @param y the y to set
      */
@@ -83,14 +91,13 @@ public class Bullet {
         this.y = y;
     }
 
-    
     /**
      * @return the image
      */
     public Image getImage() {
         return image;
     }
-    
+
     /**
      * @param image the image to set
      */
