@@ -68,6 +68,15 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 
     @Override
     public void timerTaskHandler() {
+        if (soldierGrey != null) {
+            if (moveDelay >= moveDelayLimit) {
+                soldierGrey.move();
+                moveDelay = 0;
+            } else {
+                moveDelay++;
+            }
+
+        }
 
         soldierGreen.timerTaskHandler();
         System.out.println("DogTags = " + dogTags);
@@ -81,12 +90,16 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         }
     }
 
+    private int random(int value) {
+        return (int) (Math.random() * value);
+    }
+
     @Override
     public void keyPressedHandler(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {           
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             soldierGreen.runLeft();
             this.validateMove(soldierGreen.getCenterOfMass());
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {            
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             soldierGreen.runRight();
             this.validateMove(soldierGreen.getCenterOfMass());
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -99,12 +112,22 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             AudioPlayer.play("/trench_warfare/RifleShooting.wav");
             if (soldierGreen.getState() == SoldierState.RUN_RIGHT) {
-                bullets.add(new Bullet(bulletType, soldierGreen.getX() + 300, soldierGreen.getY() - 10, BulletState.SHOT_RIGHT));
+                bullets.add(new Bullet(bulletType, soldierGreen.getX() + 10, soldierGreen.getY() - 10, BulletState.SHOT_RIGHT));
             } else {
                 bullets.add(new Bullet(bulletType, soldierGreen.getX() + 300, soldierGreen.getY() - 10, BulletState.SHOT_LEFT));
             }
         }
+        if (e.getKeyCode() == KeyEvent.VK_1) {
+            if (e.getKeyCode() == KeyEvent.VK_1) {
+                for (int i = 0; i < 5; i++) {
+                soldierGreys.add(new Soldier( new Point(random(800), random(400)), SoldierType.GREY));
+                soldierGreys.get(i).runRight();
+                soldierGrey.move();
+//                mrGreen.runRight();
+            }
 
+            }
+        }
     }
 
     @Override
@@ -166,8 +189,10 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 
             }
         }
-        if (soldierGrey != null) {
-            soldierGrey.draw(graphics);
+        if (soldierGreys != null) {
+            for (Soldier soldier : soldierGreys) {
+                soldier.draw(graphics);
+            }
 
         }
     }
@@ -231,7 +256,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
                         if (bullet.rectangle().intersects(soldierGrey.rectangle())) {
                             System.out.println("Shot");
                             soldierGrey.deadLeft();
-                            dogTags +=5;
+                            dogTags += 5;
                         } else {
 //                            soldierGrey.runLeft();
                         }
