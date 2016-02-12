@@ -6,6 +6,10 @@
 package trench_warfare;
 
 import audio.AudioPlayer;
+import audio.Playlist;
+import audio.SoundManager;
+import audio.Source;
+import audio.Track;
 import environment.Environment;
 import grid.Grid;
 import images.ResourceTools;
@@ -44,9 +48,22 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     int counter;
     double moveDelay = 0;
     double moveDelayLimit = 10;
+    double deathDelay = 0;
+    double deathDelayLimit = 10;
     private ArrayList<Item> items;
+    
+    private ArrayList<Bullet> getCopyOfBullets(){
+         ArrayList<Bullet> copyOfBullets = new ArrayList<>();
+         copyOfBullets.addAll(bullets);
+         return copyOfBullets;
+    }
+    
 
+    public BattleField() {
+        setUpSound();
+    }
 //    new greenSoilder(350, 10, 180, 180);
+
     @Override
     public void initializeEnvironment() {
         backGround = ResourceTools.loadImageFromResource("Trench_Warfare/BattleGround1.png");
@@ -63,6 +80,18 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         items = new ArrayList<>();
 //        items.add(new Item(4, 5, true, Item.ITEMS_TYPE_FLAMETHROWER, this, this));
         soldierGreys.add(soldierGrey);
+    }
+
+    SoundManager soundManager;
+    private static final String SOUND_RIFLE = "RIFLE";
+
+    private void setUpSound() {
+        //set up a list of tracks in a playlist
+        ArrayList<Track> tracks = new ArrayList<>();
+        tracks.add(new Track(SOUND_RIFLE, Source.RESOURCE, "/trench_warfare/RifleShooting.wav"));
+        Playlist playlist = new Playlist(tracks);
+        //passs the playlist to a sound manager
+        soundManager = new SoundManager(playlist);
 
     }
 
@@ -81,7 +110,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         soldierGreen.timerTaskHandler();
         System.out.println("DogTags = " + dogTags);
         if (bullets != null) {
-            for (Bullet bullet : bullets) {
+            for (Bullet bullet : getCopyOfBullets()) {
                 bullet.move();
                 this.validateMove(bullet.getCenterOfMass());
                 shot();
@@ -110,7 +139,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
             this.validateMove(soldierGreen.getCenterOfMass());
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            AudioPlayer.play("/trench_warfare/RifleShooting.wav");
+            soundManager.play(SOUND_RIFLE);
             if (soldierGreen.getState() == SoldierState.RUN_RIGHT) {
                 bullets.add(new Bullet(bulletType, soldierGreen.getX() + 10, soldierGreen.getY() - 10, BulletState.SHOT_RIGHT));
             } else {
@@ -120,12 +149,10 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         if (e.getKeyCode() == KeyEvent.VK_1) {
             if (e.getKeyCode() == KeyEvent.VK_1) {
                 for (int i = 0; i < 5; i++) {
-                soldierGreys.add(new Soldier( new Point(random(800), random(400)), SoldierType.GREY));
-                soldierGreys.get(i).runRight();
-                soldierGrey.move();
+                    soldierGreys.add(new Soldier(new Point(800, random(400)), SoldierType.GREY));
+                    soldierGreys.get(i).runRight();
 //                mrGreen.runRight();
-            }
-
+                }
             }
         }
     }
@@ -248,20 +275,34 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         return proposedLocation;
     }
 
+    private void death() {
+        if (soldierGrey != null) {
+            if (deathDelay >= deathDelayLimit) {
+                soldierGrey.dead();
+            } else {
+                deathDelay++;
+            }
+
+        }
+    }
+
     private void shot() {
         if (soldierGrey != null) {
             if (bullets != null) {
+
+                ArrayList<Bullet> toBulletRemoves = new ArrayList<>();
+
                 for (Bullet bullet : bullets) {
                     for (Soldier soldierGrey : soldierGreys) {
                         if (bullet.rectangle().intersects(soldierGrey.rectangle())) {
+                            toBulletRemoves.add(bullet);
                             System.out.println("Shot");
                             soldierGrey.deadLeft();
                             dogTags += 5;
-                        } else {
-//                            soldierGrey.runLeft();
                         }
                     }
                 }
+                bullets.removeAll(toBulletRemoves);
             }
         }
     }

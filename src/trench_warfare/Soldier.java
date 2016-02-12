@@ -93,6 +93,10 @@ public class Soldier extends Actor {
         setState(SoldierState.DEAD_LEFT);
     }
 
+    public void dead() {
+        setState(SoldierState.DEAD);
+    }
+
     public Rectangle rectangle() {
         return new Rectangle(getPosition().x, getPosition().y, getCharacterImage().getWidth(null), getCharacterImage().getHeight(null));
     }
@@ -162,6 +166,7 @@ public class Soldier extends Actor {
     private final static ArrayList<String> runUP = new ArrayList<>();
     private final static ArrayList<String> runDOWN = new ArrayList<>();
     private final static ArrayList<String> deadLeft = new ArrayList<>();
+    private final static ArrayList<String> dead = new ArrayList<>();
 
     private void loadImages() {
         standLeft.add(STAND_LEFT);
@@ -235,6 +240,8 @@ public class Soldier extends Actor {
         deadLeft.add(DEADTH_LEFT_25);
         deadLeft.add(DEADTH_LEFT_26);
         deadLeft.add(DEADTH_LEFT_27);
+
+        dead.add(DEADTH_LEFT_27);
 
         String[] imageNames = {STAND_RIGHT, RUN_RIGHT_01, RUN_RIGHT_02,
             RUN_RIGHT_03, RUN_RIGHT_04, RUN_RIGHT_05, RUN_RIGHT_06,
@@ -376,6 +383,8 @@ public class Soldier extends Actor {
                         animator.setImageNames(runLeftGrey);
                     } else if (state == SoldierState.DEAD_LEFT) {
                         animator.setImageNames(deadLeft);
+                    }else if (state == SoldierState.DEAD) {
+                        animator.setImageNames(dead);
                     } else {
                         animator.setImageNames(runLeftGrey);
                         System.out.println(state);
@@ -429,7 +438,9 @@ public class Soldier extends Actor {
         } else if (state == SoldierState.RUN_DOWN) {
             setVelocity(0, speed);
         } else if (state == SoldierState.DEAD_LEFT) {
-
+            setVelocity(0, 0);
+        }  else if (state == SoldierState.DEAD) {
+            setVelocity(0, 0);
         }
         super.move();
     }
