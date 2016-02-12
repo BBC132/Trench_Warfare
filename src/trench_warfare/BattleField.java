@@ -27,39 +27,57 @@ import java.util.ArrayList;
  */
 class BattleField extends Environment implements CellDataProviderIntf, MoveValidatorIntf {
 
+//<editor-fold defaultstate="collapsed" desc="Properties">
     int collum1X = 20;
     int collum1Y = 20;
+
     Soldier soldierGreen;
     Soldier soldierGrey;
-    Bullet bullet;
+
     private ArrayList<Bullet> bullets;
     private ArrayList<Trench> trenchs;
     private ArrayList<Mines> mines;
     private ArrayList<Soldier> soldierGreys;
+
     Image mine;
     Image mine2;
     Image trench1;
     Image bulletType;
     Image backGround;
+
     Grid grid;
+
     int dogTags = 0;
     int moveSpeed = 55;
     Image greenSoilder;
     int counter;
+
     double moveDelay = 0;
     double moveDelayLimit = 10;
     double deathDelay = 0;
     double deathDelayLimit = 10;
+
     private ArrayList<Item> items;
+
+    private GameState state;
+
+    /**
+     * @param state the state to set
+     */
+    public void setState(GameState state) {
+        this.state = state;
+    }
 
     private ArrayList<Bullet> getCopyOfBullets() {
         ArrayList<Bullet> copyOfBullets = new ArrayList<>();
         copyOfBullets.addAll(bullets);
         return copyOfBullets;
     }
+//</editor-fold>
 
     public BattleField() {
         setUpSound();
+        setState(GameState.PAUSED);
     }
 //    new greenSoilder(350, 10, 180, 180);
 
@@ -67,11 +85,15 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     public void initializeEnvironment() {
         backGround = ResourceTools.loadImageFromResource("Trench_Warfare/BattleGround1.png");
         backGround = ResourceTools.loadImageFromResource("Trench_Warfare/BattleGround1.png");
+
         grid = new Grid(10, 6, 145, 145, new Point(0, 0), Color.black);
+
         bulletType = ResourceTools.loadImageFromResource("Trench_Warfare/Bullet.png");
 //        greenSoilder = ResourceTools.loadImageFromResource("Trench_Warfare/Green soilder.gif");
+
         soldierGreen = new Soldier(new Point(collum1X, collum1Y), SoldierType.GREEN);
         soldierGrey = new Soldier(new Point(800, 400), SoldierType.GREY);
+
         trenchs = new ArrayList<>();
         bullets = new ArrayList<>();
         mines = new ArrayList<>();
@@ -96,24 +118,26 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 
     @Override
     public void timerTaskHandler() {
-        if (soldierGrey != null) {
-            if (moveDelay >= moveDelayLimit) {
-                soldierGrey.move();
-                moveDelay = 0;
-            } else {
-                moveDelay++;
+        if (state == GameState.RUNNING) {
+
+            if (soldierGrey != null) {
+                if (moveDelay >= moveDelayLimit) {
+                    soldierGrey.move();
+                    moveDelay = 0;
+                } else {
+                    moveDelay++;
+                }
+
             }
 
-        }
-
-        soldierGreen.timerTaskHandler();
-        System.out.println("DogTags = " + dogTags);
-        if (bullets != null) {
-            for (Bullet bullet : getCopyOfBullets()) {
-                bullet.move();
-                validateMove(bullet.getCenterOfMass());
-                shot();
-
+            soldierGreen.timerTaskHandler();
+            System.out.println("DogTags = " + dogTags);
+            if (bullets != null) {
+                for (Bullet bullet : getCopyOfBullets()) {
+                    bullet.move();
+                    validateMove(bullet.getCenterOfMass());
+                    shot();
+                }
             }
         }
     }
@@ -136,6 +160,12 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             soldierGreen.runUP();
             this.validateMove(soldierGreen.getCenterOfMass());
+        } else if (e.getKeyCode() == KeyEvent.VK_B) {
+            if (state == GameState.PAUSED) {
+                state = GameState.RUNNING;
+            } else if (state == GameState.RUNNING) {
+                state = GameState.PAUSED;
+            }
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             soundManager.play(SOUND_RIFLE);
