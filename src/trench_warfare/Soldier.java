@@ -86,7 +86,6 @@ public class Soldier extends Actor {
 
     public void stopRight() {
         setState(SoldierState.STAND_RIGHT);
-
     }
 
     public void deadLeft() {

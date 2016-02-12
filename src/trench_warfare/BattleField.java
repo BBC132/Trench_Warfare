@@ -51,13 +51,12 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     double deathDelay = 0;
     double deathDelayLimit = 10;
     private ArrayList<Item> items;
-    
-    private ArrayList<Bullet> getCopyOfBullets(){
-         ArrayList<Bullet> copyOfBullets = new ArrayList<>();
-         copyOfBullets.addAll(bullets);
-         return copyOfBullets;
+
+    private ArrayList<Bullet> getCopyOfBullets() {
+        ArrayList<Bullet> copyOfBullets = new ArrayList<>();
+        copyOfBullets.addAll(bullets);
+        return copyOfBullets;
     }
-    
 
     public BattleField() {
         setUpSound();
@@ -112,7 +111,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         if (bullets != null) {
             for (Bullet bullet : getCopyOfBullets()) {
                 bullet.move();
-                this.validateMove(bullet.getCenterOfMass());
+                validateMove(bullet.getCenterOfMass());
                 shot();
 
             }
@@ -140,10 +139,10 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             soundManager.play(SOUND_RIFLE);
-            if (soldierGreen.getState() == SoldierState.RUN_RIGHT) {
+            if ((soldierGreen.getState() == SoldierState.RUN_RIGHT) || (soldierGreen.getState() == SoldierState.STAND_RIGHT)) {
                 bullets.add(new Bullet(bulletType, soldierGreen.getX() + 10, soldierGreen.getY() - 10, BulletState.SHOT_RIGHT));
             } else {
-                bullets.add(new Bullet(bulletType, soldierGreen.getX() + 300, soldierGreen.getY() - 10, BulletState.SHOT_LEFT));
+                bullets.add(new Bullet(bulletType, soldierGreen.getX() - 10, soldierGreen.getY() - 10, BulletState.SHOT_LEFT));
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_1) {
@@ -211,7 +210,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         }
 
         if (bullets != null) {
-            for (Bullet bullet : bullets) {
+            for (Bullet bullet : getCopyOfBullets()) {
                 bullet.draw(graphics);
 
             }
@@ -292,15 +291,18 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 
                 ArrayList<Bullet> toBulletRemoves = new ArrayList<>();
 
-                for (Bullet bullet : bullets) {
+                for (Bullet bullet : getCopyOfBullets()) {
                     for (Soldier soldierGrey : soldierGreys) {
-                        if (bullet.rectangle().intersects(soldierGrey.rectangle())) {
+                        if ((bullet.getX() < -20) || (bullet.getX() > this.getWidth())) {
+                            toBulletRemoves.add(bullet);
+                        } else if (bullet.rectangle().intersects(soldierGrey.rectangle())) {
                             toBulletRemoves.add(bullet);
                             System.out.println("Shot");
                             soldierGrey.deadLeft();
                             dogTags += 5;
                         }
                     }
+
                 }
                 bullets.removeAll(toBulletRemoves);
             }
