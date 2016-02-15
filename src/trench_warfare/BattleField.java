@@ -5,6 +5,8 @@
  */
 package trench_warfare;
 
+import audio.AudioEvent;
+import audio.AudioEventListenerIntf;
 import audio.AudioPlayer;
 import audio.Playlist;
 import audio.SoundManager;
@@ -26,7 +28,8 @@ import java.util.ArrayList;
  *
  * @author BBC132
  */
-class BattleField extends Environment implements CellDataProviderIntf, MoveValidatorIntf {
+class BattleField extends Environment implements CellDataProviderIntf, 
+        MoveValidatorIntf, AudioEventListenerIntf {
 
 //<editor-fold defaultstate="collapsed" desc="Properties">
     int collum1X = 20;
@@ -63,7 +66,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 
     private GameState state;
 
-    String SongName;
+    String songName;
 
     /**
      * @param state the state to set
@@ -104,16 +107,16 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 
     SoundManager soundManager;
     private static final String SOUND_RIFLE = "RIFLE";
-    private static final String ITS_A_LONG_WAY_TO_BERLIN = "IALWTB";
+    private static final String SOUND_ITS_A_LONG_WAY_TO_BERLIN = "Its A Long Way To Berlin";
 
     private void setUpSound() {
         //set up a list of tracks in a playlist
         ArrayList<Track> tracks = new ArrayList<>();
         tracks.add(new Track(SOUND_RIFLE, Source.RESOURCE, "/trench_warfare/RifleShooting.wav"));
-        tracks.add(new Track(ITS_A_LONG_WAY_TO_BERLIN, Source.RESOURCE, "/trench_warfare/It's A Long Way To Berlin.wav"));
+        tracks.add(new Track(SOUND_ITS_A_LONG_WAY_TO_BERLIN, Source.RESOURCE, "/trench_warfare/It's A Long Way To Berlin.wav"));
         Playlist playlist = new Playlist(tracks);
         //passs the playlist to a sound manager
-        soundManager = new SoundManager(playlist);
+        soundManager = new SoundManager(playlist, this);
 
     }
 //    new greenSoilder(350, 10, 180, 180);
@@ -140,7 +143,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
             }
 
             soldierGreen.timerTaskHandler();
-            System.out.println("DogTags = " + dogTags);
+//            System.out.println("DogTags = " + dogTags);
             if (bullets != null) {
                 for (Bullet bullet : getCopyOfBullets()) {
                     bullet.move();
@@ -203,8 +206,8 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_COMMA) {
-            soundManager.play(ITS_A_LONG_WAY_TO_BERLIN);
-            SongName = "Its A Long Way To Berlin";
+            soundManager.play(SOUND_ITS_A_LONG_WAY_TO_BERLIN);
+            songName = "Its A Long Way To Berlin";
         }
     }
 
@@ -224,10 +227,10 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 
     @Override
     public void environmentMouseClicked(MouseEvent e) {
-        System.out.println("mouse click at system point " + e.getPoint());
-        System.out.println("mouse click in cell grid " + grid.getCellCoordinateFromSystemCoordinate(e.getPoint()));
-        System.out.println("mouse click in cell " + grid.getCellLocationFromSystemCoordinate(e.getPoint()));
-        System.out.println("");
+//        System.out.println("mouse click at system point " + e.getPoint());
+//        System.out.println("mouse click in cell grid " + grid.getCellCoordinateFromSystemCoordinate(e.getPoint()));
+//        System.out.println("mouse click in cell " + grid.getCellLocationFromSystemCoordinate(e.getPoint()));
+//        System.out.println("");
 //        trenchs.add(new Trench(grid.getCellCoordinateFromSystemCoordinate(e.getPoint()), trench1, this));
         mines.add(new Mines(grid.getCellCoordinateFromSystemCoordinate(e.getPoint()), mine, this));
 //                if (mines != null){
@@ -241,7 +244,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         graphics.drawImage(backGround, 0, 0, this);
         graphics.drawImage(radio, 950, 510, this);
         graphics.setFont(new Font("Calibri", Font.ITALIC, 32));
-//        graphics.drawString(SongName, 1100, 590);
+//        graphics.drawString(songName, 1100, 590);
 
         if (trenchs != null) {
             for (Trench trench : trenchs) {
@@ -317,7 +320,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         }
         if (isInMineField(proposedLocation)) {
             mines.clear();
-            System.out.println("ouch");
+//            System.out.println("ouch");
         }
 
 //        if (trench.getLocation().x == soldierGreen.getX()) {
@@ -355,7 +358,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
                         } else if (true) {
                             if (soldierGrey.isAlive() && (bullet.rectangle().intersects(soldierGrey.rectangle()))) {
                                 toBulletRemoves.add(bullet);
-                                System.out.println("Shot");
+//                                System.out.println("Shot");
                                 soldierGrey.deadLeft();
                                 dogTags += 5;
                             }
@@ -391,5 +394,33 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         return grid.getCellSystemCoordinate(x, y).y;
     }
 //</editor-fold>
+
+//<editor-fold defaultstate="collapsed" desc="AudioEventListenerIntf Interface Methods">
+    @Override
+    public void onAudioEvent(AudioEvent event, String trackName) {
+        System.out.println("Audio Event = " + event.name() + " " + trackName);
+        
+        if ((event == AudioEvent.ON_COMPLETE) && 
+            ((trackName.equals(SOUND_ITS_A_LONG_WAY_TO_BERLIN) ||
+             (trackName.equals(SOUND_ITS_A_LONG_WAY_TO_BERLIN) ||
+             (trackName.equals(SOUND_ITS_A_LONG_WAY_TO_BERLIN)))))) {
+            playRandomSong();
+        }
+    }
+//</editor-fold>
+
+    private void playRandomSong() {
+        double songChoice = Math.random();
+        if (soundManager != null) {
+            if (songChoice < .33) {
+                soundManager.play(SOUND_ITS_A_LONG_WAY_TO_BERLIN);
+                songName = SOUND_ITS_A_LONG_WAY_TO_BERLIN;
+            } else if (songChoice < .66) {
+                soundManager.play(SOUND_ITS_A_LONG_WAY_TO_BERLIN);
+            } else {
+                soundManager.play(SOUND_ITS_A_LONG_WAY_TO_BERLIN);
+            }
+        }
+    }
 
 }

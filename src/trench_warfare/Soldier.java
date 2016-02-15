@@ -132,34 +132,34 @@ public class Soldier extends Actor {
     private static String RUN_RIGHT_06 = "RUN_Right_06";
     private static String RUN_RIGHT_07 = "RUN_Right_07";
 
-    private static String DEADTH_LEFT = "Death_Left";
-    private static String DEADTH_LEFT_01 = "Death_Left_01";
-    private static String DEADTH_LEFT_02 = "Death_Left_02";
-    private static String DEADTH_LEFT_03 = "Death_Left_03";
-    private static String DEADTH_LEFT_04 = "Death_Left_04";
-    private static String DEADTH_LEFT_05 = "Death_Left_05";
-    private static String DEADTH_LEFT_06 = "Death_Left_06";
-    private static String DEADTH_LEFT_07 = "Death_Left_07";
-    private static String DEADTH_LEFT_08 = "Death_Left_08";
-    private static String DEADTH_LEFT_09 = "Death_Left_09";
-    private static String DEADTH_LEFT_10 = "Death_Left_10";
-    private static String DEADTH_LEFT_11 = "Death_Left_11";
-    private static String DEADTH_LEFT_12 = "Death_Left_12";
-    private static String DEADTH_LEFT_13 = "Death_Left_13";
-    private static String DEADTH_LEFT_14 = "Death_Left_14";
-    private static String DEADTH_LEFT_15 = "Death_Left_15";
-    private static String DEADTH_LEFT_16 = "Death_Left_16";
-    private static String DEADTH_LEFT_17 = "Death_Left_17";
-    private static String DEADTH_LEFT_18 = "Death_Left_18";
-    private static String DEADTH_LEFT_19 = "Death_Left_19";
-    private static String DEADTH_LEFT_20 = "Death_Left_20";
-    private static String DEADTH_LEFT_21 = "Death_Left_21";
-    private static String DEADTH_LEFT_22 = "Death_Left_22";
-    private static String DEADTH_LEFT_23 = "Death_Left_23";
-    private static String DEADTH_LEFT_24 = "Death_Left_24";
-    private static String DEADTH_LEFT_25 = "Death_Left_25";
-    private static String DEADTH_LEFT_26 = "Death_Left_26";
-    private static String DEADTH_LEFT_27 = "Death_Left_27";
+    private static String DEATH_LEFT = "Death_Left";
+    private static String DEATH_LEFT_01 = "Death_Left_01";
+    private static String DEATH_LEFT_02 = "Death_Left_02";
+    private static String DEATH_LEFT_03 = "Death_Left_03";
+    private static String DEATH_LEFT_04 = "Death_Left_04";
+    private static String DEATH_LEFT_05 = "Death_Left_05";
+    private static String DEATH_LEFT_06 = "Death_Left_06";
+    private static String DEATH_LEFT_07 = "Death_Left_07";
+    private static String DEATH_LEFT_08 = "Death_Left_08";
+    private static String DEATH_LEFT_09 = "Death_Left_09";
+    private static String DEATH_LEFT_10 = "Death_Left_10";
+    private static String DEATH_LEFT_11 = "Death_Left_11";
+    private static String DEATH_LEFT_12 = "Death_Left_12";
+    private static String DEATH_LEFT_13 = "Death_Left_13";
+    private static String DEATH_LEFT_14 = "Death_Left_14";
+    private static String DEATH_LEFT_15 = "Death_Left_15";
+    private static String DEATH_LEFT_16 = "Death_Left_16";
+    private static String DEATH_LEFT_17 = "Death_Left_17";
+    private static String DEATH_LEFT_18 = "Death_Left_18";
+    private static String DEATH_LEFT_19 = "Death_Left_19";
+    private static String DEATH_LEFT_20 = "Death_Left_20";
+    private static String DEATH_LEFT_21 = "Death_Left_21";
+    private static String DEATH_LEFT_22 = "Death_Left_22";
+    private static String DEATH_LEFT_23 = "Death_Left_23";
+    private static String DEATH_LEFT_24 = "Death_Left_24";
+    private static String DEATH_LEFT_25 = "Death_Left_25";
+    private static String DEATH_LEFT_26 = "Death_Left_26";
+    private static String DEATH_LEFT_27 = "Death_Left_27";
 
     private final static ArrayList<String> standLeft = new ArrayList<>();
     private final static ArrayList<String> standRight = new ArrayList<>();
@@ -215,48 +215,48 @@ public class Soldier extends Actor {
         runLeftGrey.add(RUN_LEFT_06_GREY);
         runLeftGrey.add(RUN_LEFT_07_GREY);
 
-        deadLeft.add(DEADTH_LEFT);
-        deadLeft.add(DEADTH_LEFT_01);
-        deadLeft.add(DEADTH_LEFT_02);
-        deadLeft.add(DEADTH_LEFT_03);
-        deadLeft.add(DEADTH_LEFT_04);
-        deadLeft.add(DEADTH_LEFT_05);
-        deadLeft.add(DEADTH_LEFT_06);
-        deadLeft.add(DEADTH_LEFT_07);
-        deadLeft.add(DEADTH_LEFT_08);
-        deadLeft.add(DEADTH_LEFT_09);
-        deadLeft.add(DEADTH_LEFT_10);
-        deadLeft.add(DEADTH_LEFT_11);
-        deadLeft.add(DEADTH_LEFT_12);
-        deadLeft.add(DEADTH_LEFT_13);
-        deadLeft.add(DEADTH_LEFT_14);
-        deadLeft.add(DEADTH_LEFT_15);
-        deadLeft.add(DEADTH_LEFT_16);
-        deadLeft.add(DEADTH_LEFT_17);
-        deadLeft.add(DEADTH_LEFT_18);
-        deadLeft.add(DEADTH_LEFT_19);
-        deadLeft.add(DEADTH_LEFT_20);
-        deadLeft.add(DEADTH_LEFT_21);
-        deadLeft.add(DEADTH_LEFT_22);
-        deadLeft.add(DEADTH_LEFT_23);
-        deadLeft.add(DEADTH_LEFT_24);
-        deadLeft.add(DEADTH_LEFT_25);
-        deadLeft.add(DEADTH_LEFT_26);
-        deadLeft.add(DEADTH_LEFT_27);
+        deadLeft.add(DEATH_LEFT);
+        deadLeft.add(DEATH_LEFT_01);
+        deadLeft.add(DEATH_LEFT_02);
+        deadLeft.add(DEATH_LEFT_03);
+        deadLeft.add(DEATH_LEFT_04);
+        deadLeft.add(DEATH_LEFT_05);
+        deadLeft.add(DEATH_LEFT_06);
+        deadLeft.add(DEATH_LEFT_07);
+        deadLeft.add(DEATH_LEFT_08);
+        deadLeft.add(DEATH_LEFT_09);
+        deadLeft.add(DEATH_LEFT_10);
+        deadLeft.add(DEATH_LEFT_11);
+        deadLeft.add(DEATH_LEFT_12);
+        deadLeft.add(DEATH_LEFT_13);
+        deadLeft.add(DEATH_LEFT_14);
+        deadLeft.add(DEATH_LEFT_15);
+        deadLeft.add(DEATH_LEFT_16);
+        deadLeft.add(DEATH_LEFT_17);
+        deadLeft.add(DEATH_LEFT_18);
+        deadLeft.add(DEATH_LEFT_19);
+        deadLeft.add(DEATH_LEFT_20);
+        deadLeft.add(DEATH_LEFT_21);
+        deadLeft.add(DEATH_LEFT_22);
+        deadLeft.add(DEATH_LEFT_23);
+        deadLeft.add(DEATH_LEFT_24);
+        deadLeft.add(DEATH_LEFT_25);
+        deadLeft.add(DEATH_LEFT_26);
+        deadLeft.add(DEATH_LEFT_27);
 
-        dead.add(DEADTH_LEFT_27);
+        dead.add(DEATH_LEFT_27);
 
         String[] imageNames = {STAND_RIGHT, RUN_RIGHT_01, RUN_RIGHT_02,
             RUN_RIGHT_03, RUN_RIGHT_04, RUN_RIGHT_05, RUN_RIGHT_06,
             RUN_RIGHT_07, STAND_LEFT, RUN_LEFT_01, RUN_LEFT_02, RUN_LEFT_03,
-            RUN_LEFT_04, RUN_LEFT_05, RUN_LEFT_06, RUN_LEFT_07, DEADTH_LEFT,
-            DEADTH_LEFT_01, DEADTH_LEFT_02,
-            DEADTH_LEFT_03, DEADTH_LEFT_04, DEADTH_LEFT_05, DEADTH_LEFT_06,
-            DEADTH_LEFT_07, DEADTH_LEFT_08, DEADTH_LEFT_09, DEADTH_LEFT_10, DEADTH_LEFT_11,
-            DEADTH_LEFT_12, DEADTH_LEFT_13, DEADTH_LEFT_14, DEADTH_LEFT_15, DEADTH_LEFT_16,
-            DEADTH_LEFT_17, DEADTH_LEFT_18, DEADTH_LEFT_19, DEADTH_LEFT_20, DEADTH_LEFT_21,
-            DEADTH_LEFT_22, DEADTH_LEFT_23, DEADTH_LEFT_24, DEADTH_LEFT_25, DEADTH_LEFT_26,
-            DEADTH_LEFT_27, STAND_LEFT_GREY, RUN_LEFT_01_GREY, RUN_LEFT_02_GREY, RUN_LEFT_03_GREY,
+            RUN_LEFT_04, RUN_LEFT_05, RUN_LEFT_06, RUN_LEFT_07, DEATH_LEFT,
+            DEATH_LEFT_01, DEATH_LEFT_02,
+            DEATH_LEFT_03, DEATH_LEFT_04, DEATH_LEFT_05, DEATH_LEFT_06,
+            DEATH_LEFT_07, DEATH_LEFT_08, DEATH_LEFT_09, DEATH_LEFT_10, DEATH_LEFT_11,
+            DEATH_LEFT_12, DEATH_LEFT_13, DEATH_LEFT_14, DEATH_LEFT_15, DEATH_LEFT_16,
+            DEATH_LEFT_17, DEATH_LEFT_18, DEATH_LEFT_19, DEATH_LEFT_20, DEATH_LEFT_21,
+            DEATH_LEFT_22, DEATH_LEFT_23, DEATH_LEFT_24, DEATH_LEFT_25, DEATH_LEFT_26,
+            DEATH_LEFT_27, STAND_LEFT_GREY, RUN_LEFT_01_GREY, RUN_LEFT_02_GREY, RUN_LEFT_03_GREY,
             RUN_LEFT_04_GREY, RUN_LEFT_05_GREY, RUN_LEFT_06_GREY, RUN_LEFT_07_GREY};
         Image[] images = new Image[52];
         images[0] = ResourceTools.loadImageFromResource("trench_warfare/soldier_green_rifle_stand_right.png");
@@ -319,6 +319,9 @@ public class Soldier extends Actor {
 
     private Image getCharacterImage() {
         if (animator != null) {
+            if (animator.getCurrentImageName().equals(DEATH_LEFT_27)) {
+                setState(SoldierState.DEAD);
+            }
             return animator.getCurrentImage();
         } else {
             System.out.println("OUCH - Animator is broken!!!");
@@ -390,7 +393,7 @@ public class Soldier extends Actor {
                         animator.setImageNames(dead);
                     } else {
                         animator.setImageNames(runLeftGrey);
-                        System.out.println(state);
+//                        System.out.println(state);
                     }
                 }
                 if (getType() == SoldierType.GREEN) {
@@ -410,7 +413,7 @@ public class Soldier extends Actor {
                         animator.setImageNames(deadLeft);
                     } else {
                         animator.setImageNames(runRight);
-                        System.out.println(state);
+//                        System.out.println(state);
                     }
                 }
             }
