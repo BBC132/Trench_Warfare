@@ -97,9 +97,13 @@ public class Soldier extends Actor {
     }
 
     public Rectangle rectangle() {
-        return new Rectangle(getPosition().x, getPosition().y, getCharacterImage().getWidth(null), getCharacterImage().getHeight(null));
+            return new Rectangle(getPosition().x, getPosition().y, getCharacterImage().getWidth(null), getCharacterImage().getHeight(null));
     }
 
+    public boolean isAlive(){
+        return ((state != SoldierState.DEAD) && (state != SoldierState.DEAD_LEFT));
+    }
+    
 //    LEFT OFF HERE
     private static String STAND_LEFT = "STAND_LEFT";
     private static String RUN_LEFT_01 = "RUN_LEFT_01";
@@ -109,7 +113,7 @@ public class Soldier extends Actor {
     private static String RUN_LEFT_05 = "RUN_LEFT_05";
     private static String RUN_LEFT_06 = "RUN_LEFT_06";
     private static String RUN_LEFT_07 = "RUN_LEFT_07";
-    
+
     private static String STAND_LEFT_GREY = "STAND_LEFT_GREY";
     private static String RUN_LEFT_01_GREY = "STAND_LEFT_01_GREY";
     private static String RUN_LEFT_02_GREY = "STAND_LEFT_02_GREY";
@@ -210,7 +214,7 @@ public class Soldier extends Actor {
         runLeftGrey.add(RUN_LEFT_05_GREY);
         runLeftGrey.add(RUN_LEFT_06_GREY);
         runLeftGrey.add(RUN_LEFT_07_GREY);
-        
+
         deadLeft.add(DEADTH_LEFT);
         deadLeft.add(DEADTH_LEFT_01);
         deadLeft.add(DEADTH_LEFT_02);
@@ -378,11 +382,11 @@ public class Soldier extends Actor {
 
             if (animator != null) {
                 if (getType() == SoldierType.GREY) {
-                     if (state == SoldierState.RUN_LEFT) {
+                    if (state == SoldierState.RUN_LEFT) {
                         animator.setImageNames(runLeftGrey);
                     } else if (state == SoldierState.DEAD_LEFT) {
                         animator.setImageNames(deadLeft);
-                    }else if (state == SoldierState.DEAD) {
+                    } else if (state == SoldierState.DEAD) {
                         animator.setImageNames(dead);
                     } else {
                         animator.setImageNames(runLeftGrey);
@@ -438,7 +442,7 @@ public class Soldier extends Actor {
             setVelocity(0, speed);
         } else if (state == SoldierState.DEAD_LEFT) {
             setVelocity(0, 0);
-        }  else if (state == SoldierState.DEAD) {
+        } else if (state == SoldierState.DEAD) {
             setVelocity(0, 0);
         }
         super.move();

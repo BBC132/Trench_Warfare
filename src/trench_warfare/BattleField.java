@@ -14,6 +14,7 @@ import environment.Environment;
 import grid.Grid;
 import images.ResourceTools;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -44,6 +45,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     Image trench1;
     Image bulletType;
     Image backGround;
+    Image radio;
 
     Grid grid;
 
@@ -60,6 +62,8 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     private ArrayList<Item> items;
 
     private GameState state;
+
+    String SongName;
 
     /**
      * @param state the state to set
@@ -78,13 +82,8 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     public BattleField() {
         setUpSound();
         setState(GameState.PAUSED);
-    }
-//    new greenSoilder(350, 10, 180, 180);
-
-    @Override
-    public void initializeEnvironment() {
         backGround = ResourceTools.loadImageFromResource("Trench_Warfare/BattleGround1.png");
-        backGround = ResourceTools.loadImageFromResource("Trench_Warfare/BattleGround1.png");
+        radio = ResourceTools.loadImageFromResource("Trench_Warfare/Radio.png");
 
         grid = new Grid(10, 6, 145, 145, new Point(0, 0), Color.black);
 
@@ -105,14 +104,22 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
 
     SoundManager soundManager;
     private static final String SOUND_RIFLE = "RIFLE";
+    private static final String ITS_A_LONG_WAY_TO_BERLIN = "IALWTB";
 
     private void setUpSound() {
         //set up a list of tracks in a playlist
         ArrayList<Track> tracks = new ArrayList<>();
         tracks.add(new Track(SOUND_RIFLE, Source.RESOURCE, "/trench_warfare/RifleShooting.wav"));
+        tracks.add(new Track(ITS_A_LONG_WAY_TO_BERLIN, Source.RESOURCE, "/trench_warfare/It's A Long Way To Berlin.wav"));
         Playlist playlist = new Playlist(tracks);
         //passs the playlist to a sound manager
         soundManager = new SoundManager(playlist);
+
+    }
+//    new greenSoilder(350, 10, 180, 180);
+
+    @Override
+    public void initializeEnvironment() {
 
     }
 
@@ -120,12 +127,14 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     public void timerTaskHandler() {
         if (state == GameState.RUNNING) {
 
-            if (soldierGrey != null) {
-                if (moveDelay >= moveDelayLimit) {
-                    soldierGrey.move();
-                    moveDelay = 0;
-                } else {
-                    moveDelay++;
+            if (soldierGreys != null) {
+                for (Soldier soldierGrey : soldierGreys) {
+                    if (moveDelay >= moveDelayLimit) {
+                        soldierGrey.move();
+                        moveDelay = 0;
+                    } else {
+                        moveDelay++;
+                    }
                 }
 
             }
@@ -163,26 +172,39 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
         } else if (e.getKeyCode() == KeyEvent.VK_B) {
             if (state == GameState.PAUSED) {
                 state = GameState.RUNNING;
-            } else if (state == GameState.RUNNING) {
-                state = GameState.PAUSED;
+            }
+            if (state == GameState.PAUSED) {
+                state = GameState.RUNNING;
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             soundManager.play(SOUND_RIFLE);
-            if ((soldierGreen.getState() == SoldierState.RUN_RIGHT) || (soldierGreen.getState() == SoldierState.STAND_RIGHT)) {
+            if ((soldierGreen.getState() == SoldierState.RUN_RIGHT) || (soldierGreen.getState() == SoldierState.STAND_RIGHT)
+                    || (soldierGreen.getState() == SoldierState.RUN_UP) || (soldierGreen.getState() == SoldierState.RUN_DOWN)) {
                 bullets.add(new Bullet(bulletType, soldierGreen.getX() + 10, soldierGreen.getY() - 10, BulletState.SHOT_RIGHT));
             } else {
                 bullets.add(new Bullet(bulletType, soldierGreen.getX() - 10, soldierGreen.getY() - 10, BulletState.SHOT_LEFT));
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_1) {
-            if (e.getKeyCode() == KeyEvent.VK_1) {
-                for (int i = 0; i < 5; i++) {
-                    soldierGreys.add(new Soldier(new Point(800, random(400)), SoldierType.GREY));
-                    soldierGreys.get(i).runRight();
+            for (int i = 0; i < 5; i++) {
+                soldierGreys.add(new Soldier(new Point(800, random(400)), SoldierType.GREY));
+                soldierGreys.get(i).runLeft();
 //                mrGreen.runRight();
-                }
+
             }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_2) {
+            for (int i = 0; i < 5; i++) {
+                soldierGreys.add(new Soldier(new Point(400, random(400)), SoldierType.GREY));
+                soldierGreys.get(i).runLeft();
+//                mrGreen.runRight();
+
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_COMMA) {
+            soundManager.play(ITS_A_LONG_WAY_TO_BERLIN);
+            SongName = "Its A Long Way To Berlin";
         }
     }
 
@@ -217,6 +239,9 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     @Override
     public void paintEnvironment(Graphics graphics) {
         graphics.drawImage(backGround, 0, 0, this);
+        graphics.drawImage(radio, 950, 510, this);
+        graphics.setFont(new Font("Calibri", Font.ITALIC, 32));
+//        graphics.drawString(SongName, 1100, 590);
 
         if (trenchs != null) {
             for (Trench trench : trenchs) {
@@ -229,6 +254,7 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
                 mine.draw(graphics);
             }
         }
+
         if (grid != null) {
             grid.paintComponent(graphics);
 
@@ -324,23 +350,25 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
                 for (Bullet bullet : getCopyOfBullets()) {
                     for (Soldier soldierGrey : soldierGreys) {
                         if ((bullet.getX() < -20) || (bullet.getX() > this.getWidth())) {
+                            //bullet off screen: delete
                             toBulletRemoves.add(bullet);
-                        } else if (bullet.rectangle().intersects(soldierGrey.rectangle())) {
-                            toBulletRemoves.add(bullet);
-                            System.out.println("Shot");
-                            soldierGrey.deadLeft();
-                            dogTags += 5;
+                        } else if (true) {
+                            if (soldierGrey.isAlive() && (bullet.rectangle().intersects(soldierGrey.rectangle()))) {
+                                toBulletRemoves.add(bullet);
+                                System.out.println("Shot");
+                                soldierGrey.deadLeft();
+                                dogTags += 5;
+                            }
                         }
                     }
-
+                    bullets.removeAll(toBulletRemoves);
                 }
-                bullets.removeAll(toBulletRemoves);
             }
         }
     }
-
 //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="CellDataProviderIntf">
+
     @Override
     public int getCellWidth() {
         return grid.getCellWidth();
@@ -352,12 +380,14 @@ class BattleField extends Environment implements CellDataProviderIntf, MoveValid
     }
 
     @Override
-    public int getSystemCoordX(int x, int y) {
+    public int getSystemCoordX(int x, int y
+    ) {
         return grid.getCellSystemCoordinate(x, y).x;
     }
 
     @Override
-    public int getSystemCoordY(int x, int y) {
+    public int getSystemCoordY(int x, int y
+    ) {
         return grid.getCellSystemCoordinate(x, y).y;
     }
 //</editor-fold>

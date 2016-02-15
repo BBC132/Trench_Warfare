@@ -37,7 +37,8 @@ public class Bullet {
     public void draw(Graphics graphics) {
 //        graphics.fillOval(getCenterOfMass().x, getCenterOfMass().y, 10, 10);
         graphics.drawImage(image, getX(), getY(), null);
-        graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
+//        graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
+        graphics.drawRect(rectangle().x, rectangle().y, rectangle().width, rectangle().height);
     }
 
     public void move() {
@@ -53,8 +54,12 @@ public class Bullet {
         return new Point(getX() + (image.getWidth(null) / 2), getY() + (image.getHeight(null) / 2));
     }
 
+    private static int bulletWidth = 6;
+    private static int bulletHeight = 4;
+    
     public Rectangle rectangle() {
-        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+        return new Rectangle(x+ (image.getWidth(null) /2) - (bulletWidth /2), y+ (image.getHeight(null) /2) - (bulletHeight /2), bulletWidth ,bulletHeight );
+//        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
     public void setState(BulletState state) {
         if (this.state != state) {
