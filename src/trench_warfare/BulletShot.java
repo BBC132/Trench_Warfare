@@ -9,6 +9,6 @@ package trench_warfare;
  *
  * @author BBC132
  */
-public enum SoldierShootable {
-    SHOOTABLE, NOTSHOOTABLE
+public enum BulletShot {
+    SHOT_BY_GREY, SHOT_BY_GREEN
 }

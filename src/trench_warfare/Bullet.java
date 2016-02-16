@@ -43,9 +43,9 @@ public class Bullet {
 
     public void move() {
         if (state == BulletState.SHOT_LEFT) {
-            x -= 10;
+            x -= 100;
         } else if (state == BulletState.SHOT_RIGHT) {
-            x += 10;
+            x += 100;
         }
 
     }
