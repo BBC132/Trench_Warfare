@@ -9,6 +9,6 @@ package trench_warfare;
  *
  * @author BBC132
  */
-public enum BulletState {
-    SHOT_LEFT, SHOT_RIGHT, Green, Grey
+public enum BulletReload {
+    CAN_SHOOT, CANT_SHOOT
 }

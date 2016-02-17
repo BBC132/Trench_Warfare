@@ -26,8 +26,11 @@ public class Bullet {
 //    private SoldierState state = SoldierState.STAND_RIGHT;
     private Image image;
     private BulletState state;
+    private BulletReload reload;
+    private BulletShot shot;
 
-    public Bullet(Image image, int x, int y, BulletState state) {
+    public Bullet(Image image, int x, int y, BulletState state, BulletShot shot) {
+        this.shot = shot;
         this.state = state;
         this.image = image;
         this.x = x;
@@ -36,38 +39,57 @@ public class Bullet {
 
     public void draw(Graphics graphics) {
 //        graphics.fillOval(getCenterOfMass().x, getCenterOfMass().y, 10, 10);
-        graphics.drawImage(image, getX(), getY(), null);
+        graphics.drawImage(image, getX() + 40, getY() + 30, null);
 //        graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
         graphics.drawRect(rectangle().x, rectangle().y, rectangle().width, rectangle().height);
     }
 
+    public void green() {
+        setShot(BulletShot.SHOT_BY_GREEN);
+    }
+
+    public void grey() {
+        setState(BulletState.Grey);
+    }
+
+    public boolean Green() {
+        return ((shot != BulletShot.SHOT_BY_GREY));
+    }
+
+    public boolean Grey() {
+        return ((shot != BulletShot.SHOT_BY_GREEN));
+    }
+
+
     public void move() {
         if (state == BulletState.SHOT_LEFT) {
-            x -= 100;
+            x -= 50;
         } else if (state == BulletState.SHOT_RIGHT) {
-            x += 100;
+            x += 50;
         }
 
     }
-    
+
     public Point getCenterOfMass() {
-        return new Point(getX() + (image.getWidth(null) / 2), getY() + (image.getHeight(null) / 2));
+        return new Point(getX() + (image.getWidth(null)), getY() + (image.getHeight(null)));
     }
 
     private static int bulletWidth = 6;
     private static int bulletHeight = 4;
-    
+
     public Rectangle rectangle() {
-        return new Rectangle(x+ (image.getWidth(null) /2) - (bulletWidth /2), y+ (image.getHeight(null) /2) - (bulletHeight /2), bulletWidth ,bulletHeight );
+        return new Rectangle(x + (image.getWidth(null)), y + (image.getHeight(null))- 15, bulletWidth, bulletHeight);
 //        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
+
     public void setState(BulletState state) {
         if (this.state != state) {
             this.state = state;
-               
+
         }
     }
 //<editor-fold defaultstate="collapsed" desc="Property">
+
     /**
      * @return the x
      */
@@ -110,4 +132,18 @@ public class Bullet {
         this.image = image;
     }
 //</editor-fold>
+
+    /**
+     * @param shot the shot to set
+     */
+    public void setShot(BulletShot shot) {
+        this.shot = shot;
+    }
+
+    /**
+     * @param reload the reload to set
+     */
+    public void setReload(BulletReload reload) {
+        this.reload = reload;
+    }
 }
