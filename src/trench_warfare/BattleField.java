@@ -55,8 +55,10 @@ class BattleField extends Environment implements CellDataProviderIntf,
     Image bulletLeft;
     Image bulletRight;
     Image backGround;
+    Image infinite;
     Image naziScalps;
     Image radio;
+    Image miniGunImage;
 
     Grid grid;
 
@@ -68,11 +70,18 @@ class BattleField extends Environment implements CellDataProviderIntf,
     double moveDelay = 0;
     double moveDelayLimit = 2;
     double rienformentDelay = 0;
-    double rienformentDelayLimit = 40;
+    double rienformentDelayLimit = 30;
     double shootDelay = 5;
     double shootDelayLimit = 0;
     double health = 100;
     double healthLimit = 0;
+    double miniGun = 0;
+    double miniGunDelay = 20;
+    double miniGunMag = 0;
+    double miniGunMagDelay = 100;
+    double miniGunImageCounter = 0;
+    double heal = 0;
+    double healLimit = 5;
     double magSize = 5;
     double magSizeLimit = 0;
 
@@ -103,7 +112,9 @@ class BattleField extends Environment implements CellDataProviderIntf,
         setState(GameState.PAUSED);
         backGround = ResourceTools.loadImageFromResource("Trench_Warfare/BattleGround1.png");
         naziScalps = ResourceTools.loadImageFromResource("Trench_Warfare/nazi_scalps.png");
+        infinite = ResourceTools.loadImageFromResource("Trench_Warfare/infinite.png");
         mag = ResourceTools.loadImageFromResource("Trench_Warfare/mag_empty.png");
+        miniGunImage = ResourceTools.loadImageFromResource("Trench_Warfare/mini_gun.png");
         mag1 = ResourceTools.loadImageFromResource("Trench_Warfare/mag_01_bullet.png");
         mag2 = ResourceTools.loadImageFromResource("Trench_Warfare/mag_02_bullet.png");
         mag3 = ResourceTools.loadImageFromResource("Trench_Warfare/mag_03_bullet.png");
@@ -127,8 +138,7 @@ class BattleField extends Environment implements CellDataProviderIntf,
         items = new ArrayList<>();
 //        items.add(new Item(4, 5, true, Item.ITEMS_TYPE_FLAMETHROWER, this, this));
         soldierGreys.add(soldierGrey);
-        soundManager.play(BACKGROUND);
-
+        soundManager.play(BACKGROUND, -1);
     }
 
     SoundManager soundManager;
@@ -161,6 +171,9 @@ class BattleField extends Environment implements CellDataProviderIntf,
 
         score = "Nazi Scalps = " + dogTags;
         healthGreen = "Your Health = " + health;
+        heal();
+                minigun();
+
         if (state == GameState.RUNNING) {
             greyshooting();
 
@@ -205,13 +218,12 @@ class BattleField extends Environment implements CellDataProviderIntf,
         if (e.getKeyCode() == KeyEvent.VK_B) {
             if (state == GameState.PAUSED) {
                 state = GameState.RUNNING;
-            }
-            if (state == GameState.PAUSED) {
-                state = GameState.RUNNING;
+            } else if (state == GameState.RUNNING) {
+                state = GameState.PAUSED;
             }
         }
         if (state == GameState.RUNNING) {
-            if (soldierGreen.getState() != SoldierState.DEAD_LEFT || soldierGreen.getState() != SoldierState.DEAD) {
+            if (soldierGreen.getState() != SoldierState.DEAD_LEFT && soldierGreen.getState() != SoldierState.DEAD) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
                     soldierGreen.runLeft();
                     this.validateMove(soldierGreen.getCenterOfMass());
@@ -244,21 +256,22 @@ class BattleField extends Environment implements CellDataProviderIntf,
                         magSize = 0;
                     }
                 }
-            } else {
-                soldierGreen.dead();
-            }
 
-            if (e.getKeyCode() == KeyEvent.VK_1) {
-                for (int i = 0; i < 5; i++) {
-                    soldierGreys.add(new Soldier(new Point(1500, random(getHeight() - 100)), SoldierType.GREY));
-                    soldierGreys.get(i).runLeft();
+                if (e.getKeyCode() == KeyEvent.VK_1) {
+                    for (int i = 0; i < 5; i++) {
+                        soldierGreys.add(new Soldier(new Point(1500, random(getHeight() - 100)), SoldierType.GREY));
+                        soldierGreys.get(i).runLeft();
 //                mrGreen.runRight();
 
+                    }
                 }
-            }
-            if (e.getKeyCode() == KeyEvent.VK_COMMA) {
-                soundManager.play(SOUND_ITS_A_LONG_WAY_TO_BERLIN);
-                songName = "Its A Long Way To Berlin";
+                if (e.getKeyCode() == KeyEvent.VK_COMMA) {
+                    soundManager.play(SOUND_ITS_A_LONG_WAY_TO_BERLIN);
+                    songName = "Its A Long Way To Berlin";
+                }
+            } else {
+                state = GameState.PAUSED;
+
             }
 
         }
@@ -266,16 +279,18 @@ class BattleField extends Environment implements CellDataProviderIntf,
 
     @Override
     public void keyReleasedHandler(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            soldierGreen.stopLeft();
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            soldierGreen.stopRight();
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            soldierGreen.stopRight();
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            soldierGreen.stopRight();
-        }
+        if (state == GameState.RUNNING) {
 
+            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                soldierGreen.stopLeft();
+            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                soldierGreen.stopRight();
+            } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                soldierGreen.stopRight();
+            } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+                soldierGreen.stopRight();
+            }
+        }
     }
 
     @Override
@@ -285,7 +300,7 @@ class BattleField extends Environment implements CellDataProviderIntf,
 //        System.out.println("mouse click in cell " + grid.getCellLocationFromSystemCoordinate(e.getPoint()));
 //        System.out.println("");
 //        trenchs.add(new Trench(grid.getCellCoordinateFromSystemCoordinate(e.getPoint()), trench1, this));
-        mines.add(new Mines(grid.getCellCoordinateFromSystemCoordinate(e.getPoint()), mine, this));
+//        mines.add(new Mines(grid.getCellCoordinateFromSystemCoordinate(e.getPoint()), mine, this));
 //                if (mines != null){
 //            mines.setX(e.getX());
 //            mines.setY(e.getY());
@@ -301,19 +316,20 @@ class BattleField extends Environment implements CellDataProviderIntf,
         graphics.drawString(score, 1120, 50);
         graphics.drawString(healthGreen, 0, 50);
         graphics.drawImage(naziScalps, 1020, 0, this);
-        if (magSize >= 5) {
+        if (magSize == 5) {
             graphics.drawImage(mag5, 1300, 50, this);
-        } else if (magSize >= 4) {
+        } else if (magSize == 4) {
             graphics.drawImage(mag4, 1300, 50, this);
-        } else if (magSize >= 3) {
+        } else if (magSize == 3) {
             graphics.drawImage(mag3, 1300, 50, this);
-        } else if (magSize >= 2) {
+        } else if (magSize == 2) {
             graphics.drawImage(mag2, 1300, 50, this);
-        } else if (magSize >= 1) {
+        } else if (magSize == 1) {
             graphics.drawImage(mag1, 1300, 50, this);
-        } else if (magSize <= 0) {
+        } else if (magSize == 0) {
             graphics.drawImage(mag, 1300, 50, this);
-
+        } else if (magSize > 5) {
+            graphics.drawImage(infinite, 1300, 50, this);
         }
 
         if (trenchs != null) {
@@ -329,7 +345,7 @@ class BattleField extends Environment implements CellDataProviderIntf,
         }
 
         if (grid != null) {
-            grid.paintComponent(graphics);
+//            grid.paintComponent(graphics);
 
 //            grid2.paintComponent(graphics);
         }
@@ -349,6 +365,10 @@ class BattleField extends Environment implements CellDataProviderIntf,
                 soldier.draw(graphics);
             }
 
+        }
+                if (miniGunImageCounter >= 1) {
+            graphics.drawImage(miniGunImage, soldierGreen.getX(), soldierGreen.getY(), this);
+            System.out.println("worked");
         }
     }
 
@@ -421,12 +441,16 @@ class BattleField extends Environment implements CellDataProviderIntf,
 //                                System.out.println("Shot");
                                     soldierGrey.deadLeft();
                                     dogTags += 1;
-                                } else if ((bullet.rectangle().intersects(soldierGreen.rectangle())) && bullet.Grey()) {
+                                    heal = heal + 1;
+                                    miniGun = miniGun + 1;
+                                } else if ((soldierGreen.isAlive() && bullet.rectangle().intersects(soldierGreen.rectangle())) && bullet.Grey()) {
                                     toBulletRemoves.add(bullet);
                                     health = health - 1;
 //                                System.out.println("Shot");
-                                    if (health <= healthLimit) {
-                                        soldierGreen.deadLeft();
+                                    if (health == healthLimit) {
+                                        miniGunImageCounter = miniGunImageCounter - 100;
+                                        soldierGreen.deadLeftGreen();
+                                        setState(GameState.PAUSED);
                                         soundManager.play(DEATH);
                                     }
                                 }
@@ -439,6 +463,34 @@ class BattleField extends Environment implements CellDataProviderIntf,
         }
 
     }
+
+    public void heal() {
+        if (soldierGreys != null) {
+
+            if (heal >= healLimit) {
+                health = health + 10;
+                heal = 0;
+            }
+        }
+    }
+
+    public void minigun() {
+        if (soldierGreen != null) {
+            if (miniGun == miniGunDelay) {
+                magSize = 1000;
+                miniGunImageCounter = miniGunImageCounter + 1;
+                    if (miniGunMag == miniGunMagDelay) {
+                        miniGunImageCounter = miniGunImageCounter - 1;
+                        magSize = 5;
+                        miniGun = miniGun * 0;
+                        miniGunImageCounter = miniGunImageCounter * 0;
+                    }
+                    miniGunMag++;
+                }
+            
+        }
+    }
+
 
     public void rienforcment() {
         soldierGreys.add(new Soldier(new Point(1500, random(getHeight() - 100)), SoldierType.GREY));
@@ -457,47 +509,25 @@ class BattleField extends Environment implements CellDataProviderIntf,
         }
     }
 
-//    private void shotGrey() {
-//        if (soldierGreen != null) {
-//            if (bullets != null) {
-//
-//                ArrayList<Bullet> toBulletRemoves = new ArrayList<>();
-//
-//                for (Bullet bullet : getCopyOfBullets()) {
-//                    if ((bullet.getX() < -20) || (bullet.getX() > this.getWidth())) {
-//                        //bullet off screen: delete
-//                        toBulletRemoves.add(bullet);
-//                    } else if (true) {
-//                        if (soldierGreen.isAlive() && (bullet.rectangle().intersects(soldierGreen.rectangle()))) {
-//                            toBulletRemoves.add(bullet);
-////                                System.out.println("Shot");
-//                            soldierGrey.deadLeft();
-//                        }
-//                    }
-//                    bullets.removeAll(toBulletRemoves);
-//                }
-//            }
-//        }
-//    }
 //<editor-fold defaultstate="collapsed" desc="CellDataProviderIntf">
     @Override
-    public int getCellWidth() {
+        public int getCellWidth() {
         return grid.getCellWidth();
     }
 
     @Override
-    public int getCellHeight() {
+        public int getCellHeight() {
         return grid.getCellHeight();
     }
 
     @Override
-    public int getSystemCoordX(int x, int y
+        public int getSystemCoordX(int x, int y
     ) {
         return grid.getCellSystemCoordinate(x, y).x;
     }
 
     @Override
-    public int getSystemCoordY(int x, int y
+        public int getSystemCoordY(int x, int y
     ) {
         return grid.getCellSystemCoordinate(x, y).y;
     }
@@ -505,7 +535,7 @@ class BattleField extends Environment implements CellDataProviderIntf,
 
 //<editor-fold defaultstate="collapsed" desc="AudioEventListenerIntf Interface Methods">
     @Override
-    public void onAudioEvent(AudioEvent event, String trackName) {
+        public void onAudioEvent(AudioEvent event, String trackName) {
         System.out.println("Audio Event = " + event.name() + " " + trackName);
 
         if ((event == AudioEvent.ON_COMPLETE)

@@ -41,7 +41,7 @@ public class Bullet {
 //        graphics.fillOval(getCenterOfMass().x, getCenterOfMass().y, 10, 10);
         graphics.drawImage(image, getX() + 40, getY() + 30, null);
 //        graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
-        graphics.drawRect(rectangle().x, rectangle().y, rectangle().width, rectangle().height);
+//        graphics.drawRect(rectangle().x, rectangle().y, rectangle().width, rectangle().height);
     }
 
     public void green() {
