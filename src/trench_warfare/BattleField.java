@@ -91,6 +91,7 @@ class BattleField extends Environment implements CellDataProviderIntf,
 
     String songName;
     String score;
+    String over;
     String healthGreen;
 
     /**
@@ -168,11 +169,11 @@ class BattleField extends Environment implements CellDataProviderIntf,
 
     @Override
     public void timerTaskHandler() {
-
+        over = "Game Over!";
         score = "Nazi Scalps = " + dogTags;
         healthGreen = "Your Health = " + health;
         heal();
-                minigun();
+        minigun();
 
         if (state == GameState.RUNNING) {
             greyshooting();
@@ -309,10 +310,14 @@ class BattleField extends Environment implements CellDataProviderIntf,
 
     @Override
     public void paintEnvironment(Graphics graphics) {
+        if (state == GameState.OVER) {
+            graphics.setFont(new Font("Calibri", Font.ITALIC, 64));
+            graphics.drawString(over, 500, 50);
+
+        }
         graphics.drawImage(backGround, 0, 0, this);
 //        graphics.drawImage(radio, 950, 510, this);
         graphics.setFont(new Font("Calibri", Font.ITALIC, 32));
-//        graphics.drawString(score, 1100, 590);
         graphics.drawString(score, 1120, 50);
         graphics.drawString(healthGreen, 0, 50);
         graphics.drawImage(naziScalps, 1020, 0, this);
@@ -366,7 +371,7 @@ class BattleField extends Environment implements CellDataProviderIntf,
             }
 
         }
-                if (miniGunImageCounter >= 1) {
+        if (miniGunImageCounter >= 1) {
             graphics.drawImage(miniGunImage, soldierGreen.getX(), soldierGreen.getY(), this);
             System.out.println("worked");
         }
@@ -450,7 +455,7 @@ class BattleField extends Environment implements CellDataProviderIntf,
                                     if (health == healthLimit) {
                                         miniGunImageCounter = miniGunImageCounter - 100;
                                         soldierGreen.deadLeftGreen();
-                                        setState(GameState.PAUSED);
+                                        state = GameState.OVER;
                                         soundManager.play(DEATH);
                                     }
                                 }
@@ -479,18 +484,17 @@ class BattleField extends Environment implements CellDataProviderIntf,
             if (miniGun == miniGunDelay) {
                 magSize = 1000;
                 miniGunImageCounter = miniGunImageCounter + 1;
-                    if (miniGunMag == miniGunMagDelay) {
-                        miniGunImageCounter = miniGunImageCounter - 1;
-                        magSize = 5;
-                        miniGun = miniGun * 0;
-                        miniGunImageCounter = miniGunImageCounter * 0;
-                    }
-                    miniGunMag++;
+                if (miniGunMag == miniGunMagDelay) {
+                    miniGunImageCounter = miniGunImageCounter - 1;
+                    magSize = 5;
+                    miniGun = miniGun * 0;
+                    miniGunImageCounter = miniGunImageCounter * 0;
                 }
-            
+                miniGunMag++;
+            }
+
         }
     }
-
 
     public void rienforcment() {
         soldierGreys.add(new Soldier(new Point(1500, random(getHeight() - 100)), SoldierType.GREY));
@@ -511,23 +515,23 @@ class BattleField extends Environment implements CellDataProviderIntf,
 
 //<editor-fold defaultstate="collapsed" desc="CellDataProviderIntf">
     @Override
-        public int getCellWidth() {
+    public int getCellWidth() {
         return grid.getCellWidth();
     }
 
     @Override
-        public int getCellHeight() {
+    public int getCellHeight() {
         return grid.getCellHeight();
     }
 
     @Override
-        public int getSystemCoordX(int x, int y
+    public int getSystemCoordX(int x, int y
     ) {
         return grid.getCellSystemCoordinate(x, y).x;
     }
 
     @Override
-        public int getSystemCoordY(int x, int y
+    public int getSystemCoordY(int x, int y
     ) {
         return grid.getCellSystemCoordinate(x, y).y;
     }
@@ -535,7 +539,7 @@ class BattleField extends Environment implements CellDataProviderIntf,
 
 //<editor-fold defaultstate="collapsed" desc="AudioEventListenerIntf Interface Methods">
     @Override
-        public void onAudioEvent(AudioEvent event, String trackName) {
+    public void onAudioEvent(AudioEvent event, String trackName) {
         System.out.println("Audio Event = " + event.name() + " " + trackName);
 
         if ((event == AudioEvent.ON_COMPLETE)

@@ -10,5 +10,5 @@ package trench_warfare;
  * @author BBC132
  */
 public enum GameState {
-    PAUSED, RUNNING
+    PAUSED, RUNNING, OVER
 }
